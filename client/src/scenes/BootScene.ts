@@ -13,6 +13,8 @@ export class BootScene extends Phaser.Scene {
     super("BootScene");
   }
 
+  private status!: Phaser.GameObjects.Text;
+
   /** Lifecycle: runs once, after `preload` (we have nothing to load yet). ≈ Angular's ngOnInit. */
   create(): void {
     // Scale Manager size = the base resolution (960×640), whatever the window size.
@@ -23,17 +25,19 @@ export class BootScene extends Phaser.Scene {
     // Phaser's default text style (font, colour) on purpose: visuals are a later, creative step.
     // setOrigin(0.5) anchors each text by its centre instead of its top-left corner.
     this.add.text(centerX, centerY - 40, GAME_TITLE, { fontSize: "48px" }).setOrigin(0.5);
-    const status = this.add
+    this.status = this.add
       .text(centerX, centerY + 30, "Contacting the API...", { fontSize: "24px" })
       .setOrigin(0.5);
 
-    // The fetch is async; the game loop keeps rendering frames while we wait.
     fetchHelloMessage()
-      .then((message) => status.setText(message))
+      .then((message) => this.status.setText(message))
       .catch((error: unknown) => {
         const reason = error instanceof Error ? error.message : String(error);
-        status.setText(`API unreachable: ${reason}`);
+        this.status.setText(`API unreachable: ${reason}`);
       });
   }
 
+  update(time: number): void {
+    this.status.setAlpha(0.5 + 0.5 * Math.sin(time / 300));
+  }
 }
