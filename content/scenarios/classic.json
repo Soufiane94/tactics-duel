@@ -1,0 +1,24 @@
+{
+  "id": "classic",
+  "name": "Classic",
+  "board": {
+    "width": 8,
+    "height": 8,
+    "obstacles": [
+      { "x": 5, "y": 2 },
+      { "x": 2, "y": 3 },
+      { "x": 5, "y": 4 },
+      { "x": 2, "y": 5 }
+    ]
+  },
+  "placements": [
+    { "id": "one-warrior", "typeId": "warrior", "owner": "one", "x": 3, "y": 6 },
+    { "id": "one-archer",  "typeId": "archer",  "owner": "one", "x": 1, "y": 7 },
+    { "id": "one-mage",    "typeId": "mage",    "owner": "one", "x": 4, "y": 7 },
+    { "id": "one-healer",  "typeId": "healer",  "owner": "one", "x": 6, "y": 7 },
+    { "id": "two-warrior", "typeId": "warrior", "owner": "two", "x": 4, "y": 1 },
+    { "id": "two-archer",  "typeId": "archer",  "owner": "two", "x": 6, "y": 0 },
+    { "id": "two-mage",    "typeId": "mage",    "owner": "two", "x": 3, "y": 0 },
+    { "id": "two-healer",  "typeId": "healer",  "owner": "two", "x": 1, "y": 0 }
+  ]
+}

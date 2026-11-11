@@ -155,5 +155,7 @@ File: `docs/learning/step-NN-<slug>.md`. Fill in every section and delete none.
 - Without Aspire: `dotnet run --project src/Tactics.Api --launch-profile http` + `npm run dev` in `client/` → http://localhost:5173
 - .NET build: `dotnet build` (warnings are errors in every project: must be 0)
 - .NET tests: `dotnet test` (all test projects, Microsoft.Testing.Platform via `global.json`)
+  - Core only (fast): `dotnet test --project tests/Tactics.Core.Tests`
+  - While `aspire run` is running, a root `dotnet build` fails with file locks (MSB3027) on the API's DLLs: stop it first, or build only the project you changed.
 - Client (in `client/`): `npm run dev` · `npm run build` · `npm run typecheck` · `npm test`
 - After upgrading Phaser: copy every folder in `client/node_modules/phaser/skills/` into `.claude/skills/` again

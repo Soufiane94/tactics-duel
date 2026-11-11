@@ -1,0 +1,8 @@
+{
+  "unitTypes": [
+    { "id": "warrior", "name": "Warrior", "maxHp": 28, "power": 10, "defense": 3, "move": 3, "minRange": 1, "maxRange": 1, "ability": "damage" },
+    { "id": "archer",  "name": "Archer",  "maxHp": 18, "power": 8,  "defense": 1, "move": 3, "minRange": 2, "maxRange": 3, "ability": "damage" },
+    { "id": "mage",    "name": "Mage",    "maxHp": 14, "power": 12, "defense": 0, "move": 2, "minRange": 1, "maxRange": 2, "ability": "damage" },
+    { "id": "healer",  "name": "Healer",  "maxHp": 16, "power": 5,  "defense": 1, "move": 3, "minRange": 1, "maxRange": 2, "ability": "heal" }
+  ]
+}

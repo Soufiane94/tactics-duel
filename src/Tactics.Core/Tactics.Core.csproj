@@ -5,8 +5,14 @@
     Shared settings (net10.0, nullable, warnings as errors) come from Directory.Build.props.
   -->
   <PropertyGroup>
-    <!-- Every public type and member gets an XML doc comment (CLAUDE.md, Code conventions). -->
+    <!-- Every public type and member needs an XML doc comment; a missing one fails the build (CS1591). -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Core does no I/O, so it doesn't even import the I/O and HTTP namespaces by default. -->
+    <Using Remove="System.IO" />
+    <Using Remove="System.Net.Http" />
+  </ItemGroup>
 
 </Project>

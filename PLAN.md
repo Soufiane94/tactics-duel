@@ -11,7 +11,7 @@ It's built in small steps, each followed by a learning report.
 
 ## Progress
 - [x] Step 0 — Project setup & tooling
-- [ ] Step 1 — Game state model (C#)
+- [x] Step 1 — Game state model (C#)
 - [ ] Step 2 — Movement & pathfinding (C#)
 - [ ] Step 3 — Attack & heal (C#)
 - [ ] Step 4 — Turns, victory & replay (C#)
@@ -839,3 +839,4 @@ Accounts and passwords · AI opponent · matchmaking · chat · native mobile ap
 - 2026-11-11 — Step 0 — `TreatWarningsAsErrors` (plus `EnforceCodeStyleInBuild`) applies to every project, tests included, not only `src/` — the 0-warning check covers tests anyway, and xUnit analyzers catch real test mistakes (approved in the Step 0 brief).
 - 2026-11-11 — Step 0 — the AppHost health-checks the API on its `http` endpoint (`WithHttpHealthCheck("/health", endpointName: "http")`) — with an untrusted HTTPS dev certificate, the https probe failed and `WaitFor(api)` blocked the client forever.
 - 2026-11-11 — Step 0 — `vite.config.ts` doesn't set `server.port`; it only sets `strictPort` under Aspire — Aspire 13 starts Vite with `--port` (and sets `PORT`), which overrides the config anyway.
+- 2026-11-11 — Step 1 — "non-positive stats are invalid" now means: `maxHp`, `power`, `move`, `minRange`, `maxRange` at least 1 and `defense` at least 0; validation also requires each side to have a unit and obstacles to be on the board — the plan's own Mage has defense 0, and a side with no units would start an already-won game.

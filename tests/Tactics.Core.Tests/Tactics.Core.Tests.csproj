@@ -10,6 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- The real, hand-edited game data, copied next to the test DLL (as content/...) so tests can read it. -->
+    <None Include="..\..\content\**\*.json" LinkBase="content" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
