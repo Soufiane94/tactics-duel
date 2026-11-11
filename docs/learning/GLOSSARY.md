@@ -6,13 +6,20 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Aspire AppHost** — a C# program that describes the dev environment (services, apps, databases) and runs it with `aspire run`. *(Step 0)*
 - **Aspire dashboard** — a web page that shows every resource's state, logs, traces and environment variables. *(Step 0)*
 - **Base resolution** — the fixed logical size the game draws in (here 960×640), whatever the window size. *(Step 0)*
+- **BFS (breadth-first search)** — explores from a start ring by ring, with a queue. When every step costs 1, it finds shortest paths. *(Step 2)*
+- **Came-from map** — for each tile a search reached, the tile it came from. Following it backwards rebuilds the path. *(Step 2)*
 - **Canvas 2D renderer** — draws with the browser's CPU-based 2D API. Simple, but deprecated in Phaser 4. *(Step 0)*
 - **Central Package Management (CPM)** — every NuGet version lives once in `Directory.Packages.props`; projects list packages without versions. *(Step 0)*
+- **Closed hierarchy** — a base type with a fixed set of subtypes, so code can handle every case (`ActionOutcome`: `Accepted` or `Rejected`). *(Step 2)*
+- **Command (pattern)** — a request stored as data (`MoveAction`), so it can be checked, saved, sent and replayed. *(Step 2)*
 - **Data-driven design** — numbers live in data files and rules in code, so balancing means editing JSON, not recompiling. *(Step 1)*
 - **Deterministic** — the same inputs always give the same outputs: no clock, no randomness. *(Step 1)*
 - **Dev proxy** — the Vite server forwards some paths (`/api`) to another server, so the browser sees one origin. *(Step 0)*
 - **DTO (data transfer object)** — a plain type shaped like a file or wire format, mapped to domain types after validation. *(Step 1)*
+- **Event (game event)** — a past-tense fact about what just happened (`UnitMoved`). The client animates it; the state stays the truth. *(Step 2)*
+- **Flood fill** — spreading out from one tile to every tile connected to it, like paint. BFS is one way to do it. *(Step 2)*
 - **Frame** — one redraw of the whole canvas. At 60 FPS, a frame lasts about 16.7 ms. *(Step 0)*
+- **Frontier** — the queue of tiles a search has found but not explored yet. *(Step 2)*
 - **Game engine** — an editor-based tool (Unity, Godot) that hosts your code inside its own app. *(Step 0)*
 - **Game framework** — a code library (Phaser) that you call from your own program. *(Step 0)*
 - **Game loop** — the endless cycle of update → render, run once per frame. *(Step 0)*
@@ -26,11 +33,14 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Microsoft.Testing.Platform (MTP)** — the new .NET test runner. Test projects are executables. *(Step 0)*
 - **Neighbours (4-way)** — the tiles up, right, down and left of a tile. No diagonals. *(Step 1)*
 - **Origin (game object)** — the anchor point of an object. `0.5` means it's positioned by its centre, `0` by its top-left corner. *(Step 0)*
+- **Path reconstruction** — rebuilding a path by following came-from entries from the destination back to the start, then reversing it. *(Step 2)*
 - **Placement** — where one unit starts in a scenario. *(Step 1)*
 - **Pure function** — its result depends only on its inputs, with no side effects (I/O, clock, randomness). *(Step 1)*
+- **Reach map** — every tile one unit can reach this turn, with the shortest path to each (`ReachMap`). *(Step 2)*
 - **Record (C#)** — a type with value equality and `with` support; a natural fit for immutable data. *(Step 1)*
 - **Renderer** — the part of Phaser that turns game objects into pixels on the canvas. *(Step 0)*
 - **Resource (Aspire)** — one thing the AppHost runs: a project, an executable, a container. *(Step 0)*
+- **Rule violation** — a stable code for why the engine refused an action (`NotYourTurn`, `DestinationNotReachable`…). *(Step 2)*
 - **Scale mode (`FIT`)** — how Phaser sizes the canvas to the window. `FIT` keeps the aspect ratio. *(Step 0)*
 - **Scenario** — a board plus starting placements, stored in `content/scenarios/`. *(Step 1)*
 - **Scene** — one self-contained screen of the game, with its own objects and lifecycle. *(Step 0)*
@@ -40,6 +50,9 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Smoke test** — a tiny test that proves the wiring works end to end, not the logic. *(Step 0)*
 - **Source of truth** — the one place a fact is stored. Everything else is derived from it. *(Step 1)*
 - **Test fixture** — fixed, known data that a test starts from. *(Step 1)*
+- **Tie-breaking** — the fixed rule that picks one result when several are equally good. Here, the neighbor order picks the path. *(Step 2)*
+- **Type discriminator** — the JSON field (`"type": "move"`) that says which subtype an object is. *(Step 2)*
+- **Validate, then apply** — check every rule before changing anything. A failed check returns a rejection, not an exception. *(Step 2)*
 - **Vite** — the dev server and bundler for the client: serves TypeScript on the fly, then builds `dist/` for production. *(Step 0)*
 - **WebGL renderer** — draws with the GPU through shaders. Fast, and Phaser 4's main renderer. *(Step 0)*
 - **`with` expression** — copies a record and changes some of its properties: `unit with { Hp = 5 }`. *(Step 1)*

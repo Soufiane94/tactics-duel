@@ -1,4 +1,5 @@
 using Tactics.Core.Model;
+using Tactics.Core.Rules;
 
 namespace Tactics.Core.Tests.Helpers;
 
@@ -60,6 +61,36 @@ public sealed class AsciiBoardTests
 
         Assert.Same(AsciiBoard.DefaultUnitTypes, state.UnitTypes);
         Assert.Equal(18, state.Units[0].Hp); // the placeholder archer from PLAN.md, section 1
+    }
+
+    [Fact]
+    public void Draw_gives_back_the_picture_that_Parse_read()
+    {
+        const string map = """
+            . h # m
+            W . a .
+            # A . H
+            """;
+
+        Assert.Equal(map, AsciiBoard.Draw(AsciiBoard.Parse(map)), ignoreLineEndingDifferences: true);
+    }
+
+    [Fact]
+    public void Draw_shows_the_number_of_steps_to_each_reachable_tile()
+    {
+        var state = AsciiBoard.Parse("""
+            . . .
+            . W .
+            . # .
+            """);
+
+        var reach = Pathfinding.Reachable(state, state.Units[0]);
+
+        Assert.Equal("""
+            2 1 2
+            1 W 1
+            2 # 2
+            """, AsciiBoard.Draw(state, reach), ignoreLineEndingDifferences: true);
     }
 
     [Theory]

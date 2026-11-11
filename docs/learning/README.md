@@ -6,3 +6,4 @@ One report per step: my course notes for learning game development. New terms go
 |---|---|---|
 | 0 | [Project setup & tooling](step-00-setup.md) | `aspire run` starts the API and the client, and a Phaser canvas shows the API's message. |
 | 1 | [Game state model](step-01-game-state.md) | The whole game is immutable C# data, loaded and validated from JSON files you edit. |
+| 2 | [Movement & pathfinding](step-02-movement.md) | Units move: a BFS finds every reachable tile, and the engine accepts or rejects each move with a code. |

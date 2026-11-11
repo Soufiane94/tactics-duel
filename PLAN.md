@@ -12,7 +12,7 @@ It's built in small steps, each followed by a learning report.
 ## Progress
 - [x] Step 0 — Project setup & tooling
 - [x] Step 1 — Game state model (C#)
-- [ ] Step 2 — Movement & pathfinding (C#)
+- [x] Step 2 — Movement & pathfinding (C#)
 - [ ] Step 3 — Attack & heal (C#)
 - [ ] Step 4 — Turns, victory & replay (C#)
 - [ ] Step 5 — Game server v1 (in-memory API)
@@ -330,7 +330,7 @@ Every step lists **Build**, **Checks**, **Done when**, **See it yourself**, what
    - The start tile isn't a destination.
 2. Actions are commands as data. Abstract record `GameAction(PlayerSide Player)` with `MoveAction(Player, UnitId, To)`. JSON discriminator `"move"`.
 3. Events: abstract record `GameEvent`, with `UnitMoved(UnitId, From, To, Path)`.
-4. `ActionResult` is either `Accepted(GameState State, ImmutableList<GameEvent> Events)` or `Rejected(RuleViolation Code, string Message)`. Use a closed hierarchy and switch expressions.
+4. `ActionOutcome` is either `Accepted(GameState State, ImmutableList<GameEvent> Events)` or `Rejected(RuleViolation Code, string Message)`. Use a closed hierarchy and switch expressions.
 5. `GameEngine.Apply(GameState, GameAction)`:
    - **Validate:** game in progress → it's that player's turn → the unit exists and is theirs → it hasn't moved or acted → the destination is reachable.
    - **Apply:** set the new position and `HasMoved = true`, and emit `UnitMoved` with its path.
@@ -840,3 +840,6 @@ Accounts and passwords · AI opponent · matchmaking · chat · native mobile ap
 - 2026-11-11 — Step 0 — the AppHost health-checks the API on its `http` endpoint (`WithHttpHealthCheck("/health", endpointName: "http")`) — with an untrusted HTTPS dev certificate, the https probe failed and `WaitFor(api)` blocked the client forever.
 - 2026-11-11 — Step 0 — `vite.config.ts` doesn't set `server.port`; it only sets `strictPort` under Aspire — Aspire 13 starts Vite with `--port` (and sets `PORT`), which overrides the config anyway.
 - 2026-11-11 — Step 1 — "non-positive stats are invalid" now means: `maxHp`, `power`, `move`, `minRange`, `maxRange` at least 1 and `defense` at least 0; validation also requires each side to have a unit and obstacles to be on the board — the plan's own Mage has defense 0, and a side with no units would start an already-won game.
+- 2026-11-11 — Step 2 — `ActionResult` is named `ActionOutcome` (nested `ActionOutcome.Accepted` / `ActionOutcome.Rejected`) — the plan's name clashes with ASP.NET Core MVC's `ActionResult`: an API file that imports both `Tactics.Core` and `Microsoft.AspNetCore.Mvc` gets CS0104 "ambiguous reference" (approved in the Step 2 brief).
+- 2026-11-11 — Step 2 — `TacticsJson.Options` sets `AllowOutOfOrderMetadataProperties = true` — System.Text.Json otherwise reads `"type"` only as the first property, and PostgreSQL `jsonb` (Step 12) reorders keys shortest first, so a stored move comes back as `{"to": …, "type": "move", …}` (approved in the Step 2 brief).
+- 2026-11-11 — Step 2 — the event family got its JSON discriminator (`"type": "unitMoved"`) now, together with the action's, instead of waiting for Step 4 — each family gets its JSON shape when its first type appears; Step 4 still adds the full round-trip suite.

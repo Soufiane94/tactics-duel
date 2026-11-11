@@ -24,6 +24,12 @@ public static class TacticsJson
             // Named explicitly, so these options work even in apps that switch reflection-based JSON off
             // by default (.NET 10 single-file apps, Native AOT). Otherwise MakeReadOnly throws there.
             TypeInfoResolver = new DefaultJsonTypeInfoResolver(),
+
+            // Read the "type" field of actions and events wherever it is in the object, not only first.
+            // PostgreSQL jsonb reorders keys (shortest first), so a stored move comes back as
+            // {"to": …, "type": "move", …}. Hand-written JSON gets the same freedom. The cost is extra
+            // buffering, only when "type" isn't first.
+            AllowOutOfOrderMetadataProperties = true,
         };
 
         // Enums as camelCase strings. Numbers such as "owner": 0 are rejected: unreadable in a hand-edited file.

@@ -1,10 +1,13 @@
 using System.Collections.Immutable;
+using System.Globalization;
 using Tactics.Core.Model;
+using Tactics.Core.Rules;
 
 namespace Tactics.Core.Tests.Helpers;
 
 /// <summary>
-/// Builds a <see cref="GameState"/> from a text picture, so a rule test shows the board it tests.
+/// Builds a <see cref="GameState"/> from a text picture, so a rule test shows the board it tests,
+/// and draws a state back as a picture (<see cref="Draw"/>), so a test can check a whole board at once.
 /// Legend (PLAN.md, section 1): uppercase = Player One, lowercase = Player Two, '#' = obstacle, '.' = empty.
 /// W/w warrior, A/a archer, M/m mage, H/h healer. Cells are separated by spaces.
 /// The "x: 0 1 2 …" header line and the "y=N" row labels are optional, so the picture from PLAN.md works as is.
@@ -30,6 +33,9 @@ public static class AsciiBoard
         ['m'] = "mage",
         ['h'] = "healer",
     };
+
+    private static readonly Dictionary<string, char> LetterByTypeId =
+        TypeIdByLetter.ToDictionary(pair => pair.Value, pair => pair.Key);
 
     /// <summary>
     /// Parses the picture into the initial state of a game: turn 1, Player One to play, everyone at full HP.
@@ -99,6 +105,48 @@ public static class AsciiBoard
         var board = new Board(width, rows.Count, obstacles.ToImmutable());
         var setup = new GameSetup("ascii", board, DefaultUnitTypes, placements.ToImmutable());
         return GameEngine.CreateInitialState(setup);
+    }
+
+    /// <summary>
+    /// The reverse of <see cref="Parse"/>: the state as a picture in the same format, without labels.
+    /// With a reach map, each destination shows its number of steps (1–9), which is the length of its path:
+    /// <code>
+    /// 2 1 2
+    /// 1 W 1
+    /// 2 # 2
+    /// </code>
+    /// Rows end with "\n". Compare pictures with <c>ignoreLineEndingDifferences: true</c>: in a Windows checkout,
+    /// Git turns the line endings of a test's raw string literal into "\r\n".
+    /// </summary>
+    public static string Draw(GameState state, ReachMap? reach = null)
+    {
+        var rows = Enumerable.Range(0, state.Board.Height)
+            .Select(y => string.Join(' ', Enumerable.Range(0, state.Board.Width)
+                .Select(x => CellAt(state, reach, new Position(x, y)))));
+
+        return string.Join('\n', rows);
+    }
+
+    private static string CellAt(GameState state, ReachMap? reach, Position tile)
+    {
+        if (state.Board.IsObstacle(tile))
+        {
+            return "#";
+        }
+
+        if (state.UnitAt(tile) is { } unit)
+        {
+            var letter = LetterByTypeId[unit.TypeId];
+            return (unit.Owner == PlayerSide.One ? char.ToUpperInvariant(letter) : letter).ToString();
+        }
+
+        if (reach is not null && reach.CanReach(tile))
+        {
+            // Drawing the path length (not a stored distance) means a picture test checks the paths too.
+            return reach.PathTo(tile).Count.ToString(CultureInfo.InvariantCulture);
+        }
+
+        return ".";
     }
 
     // "y=0     . h . m" → ". h . m"
