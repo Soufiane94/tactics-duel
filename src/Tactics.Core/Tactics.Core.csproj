@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The rules engine. Pure C#: BCL only, no NuGet packages, no I/O.
+    Shared settings (net10.0, nullable, warnings as errors) come from Directory.Build.props.
+  -->
+  <PropertyGroup>
+    <!-- Every public type and member gets an XML doc comment (CLAUDE.md, Code conventions). -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+</Project>

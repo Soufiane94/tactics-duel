@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Tactics.Api/Tactics.Api.csproj" />
+    <Project Path="src/Tactics.AppHost/Tactics.AppHost.csproj" />
+    <Project Path="src/Tactics.Core/Tactics.Core.csproj" />
+    <Project Path="src/Tactics.ServiceDefaults/Tactics.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Tactics.Api.Tests/Tactics.Api.Tests.csproj" />
+    <Project Path="tests/Tactics.Core.Tests/Tactics.Core.Tests.csproj" />
+  </Folder>
+</Solution>

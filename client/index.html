@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Filled in by main.ts from GAME_TITLE (src/config.ts), the only place the title is written. -->
+    <title></title>
+    <style>
+      /* Layout only: give the game container the whole window so Scale.FIT can size the canvas. */
+      html,
+      body,
+      #game {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.6.5">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AspireUseCliBundle>true</AspireUseCliBundle>
+    <UserSecretsId>5ba8a328-5807-4752-8c9a-aa6fd3adb1ed</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.JavaScript" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tactics.Api\Tactics.Api.csproj" />
+  </ItemGroup>
+
+</Project>

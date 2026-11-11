@@ -1,0 +1,29 @@
+# Shared editor settings for every IDE (Visual Studio, Rider, VS Code).
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{cs,csx}]
+indent_size = 4
+
+# C# style (matches CLAUDE.md code conventions)
+[*.cs]
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_using_directive_placement = outside_namespace:warning
+dotnet_sort_system_directives_first = true
+csharp_prefer_braces = true:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+dotnet_style_readonly_field = true:suggestion
+dotnet_style_prefer_auto_properties = true:suggestion
+
+# xUnit v3: pass TestContext.Current.CancellationToken to async calls
+dotnet_diagnostic.xUnit1051.severity = warning
