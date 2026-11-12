@@ -54,4 +54,15 @@ public sealed class GameStateTests
         Assert.Equal(new Position(0, 2), State.FindUnit("one-warrior")!.Position); // the old state is still valid
         Assert.False(warrior.HasMoved);
     }
+
+    [Fact]
+    public void My_first_board_test()
+    {
+        var state = AsciiBoard.Parse("""
+            . m
+            A #
+            """);
+        Assert.Equal("one-archer", state.UnitAt(new Position(0, 1))?.Id);
+    }
+
 }
