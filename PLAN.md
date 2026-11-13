@@ -15,7 +15,7 @@ It's built in small steps, each followed by a learning report.
 - [x] Step 2 — Movement & pathfinding (C#)
 - [x] Step 3 — Attack & heal (C#)
 - [x] Step 4 — Turns, victory & replay (C#)
-- [ ] Step 5 — Game server v1 (in-memory API)
+- [x] Step 5 — Game server v1 (in-memory API)
 - [ ] Step 6 — Phaser 101: draw the board
 - [ ] Step 7 — Input: select, move, act, end turn
 - [ ] Step 8 — Game feel: animations & HUD
@@ -467,10 +467,11 @@ Every step lists **Build**, **Checks**, **Done when**, **See it yourself**, what
 - playing out of turn → 422 `NotYourTurn`
 - stale `expectedSequence` → 409 `SequenceConflict`
 - a JSON shape check of `GameView` (camelCase, discriminators, `availableActions` empty for the waiting player)
+- a whole game over HTTP on a small test scenario, to `gameWon`, then 422 `GameOver`
 
 Plus `npm run typecheck` for `types.ts`.
 
-**Done when:** all checks pass, and a full game can be played through Scalar.
+**Done when:** all checks pass, a whole game plays over HTTP in a test (`FullGameTests`), and a few turns per side work through Scalar.
 **See it yourself:** `aspire run` → API → `/scalar` → create a game, join it, then post a move with each token.
 **Learning report must explain:**
 - The authoritative server: what a cheating client could do otherwise.
@@ -846,3 +847,7 @@ Accounts and passwords · AI opponent · matchmaking · chat · native mobile ap
 - 2026-11-12 — Step 3 — `CalculateHeal` takes `(healerType, targetType, targetHp)` instead of `(healerType, target)` — `Unit` has no `MaxHp`; it lives on the target's `UnitType` (approved in the Step 3 brief).
 - 2026-11-12 — Step 3 — the JSON shapes of `act`, `unitDamaged`, `unitHealed` and `unitDefeated` are pinned by tests now — same rule as Step 2: a type's shape is fixed when it appears, and it must be registered with `[JsonDerivedType]` anyway, or serializing it throws; Step 4 still adds the full round-trip suite.
 - 2026-11-13 — Step 4 — `GetAvailableActions` lists only the units that can still move or act, not every unit — on your turn, an empty list then means only End Turn is left, for the HUD (Step 8) and a future AI (approved in the Step 4 brief).
+- 2026-11-13 — Step 5 — "Done when" asks for a whole game over HTTP in a test (`FullGameTests`, on a small test scenario) plus a few turns per side in Scalar, instead of a full game through Scalar — on the classic board that's 40+ hand-written requests, each with the right token and sequence (approved in the Step 5 brief).
+- 2026-11-13 — Step 5 — `Microsoft.AspNetCore.OpenApi` 10.0.15 is added to `Directory.Packages.props` — the plan's "built-in `AddOpenApi()`" ships in this package, not in the shared framework (approved in the Step 5 brief).
+- 2026-11-13 — Step 5 — `SubmitAction` checks `expectedSequence` before `Replay`, not after — the answer is the same, and a stale request costs no replay.
+- 2026-11-13 — Step 5 — small additions beyond the plan: a "Scalar (API docs)" link in the Aspire dashboard, structured logs in `GameService` (never a token or an invite code), and production-mode error tests — they make the step easier to see and to check (the link and the logs were in the Step 5 brief).

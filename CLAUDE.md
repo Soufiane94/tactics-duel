@@ -153,6 +153,8 @@ File: `docs/learning/step-NN-<slug>.md`. Fill in every section and delete none.
   - Background mode for scripted checks: `aspire run --detach` · `aspire wait client` · `aspire describe` · `aspire logs <resource>` · `aspire stop`
   - One-time: `aspire certs trust` (trusts the HTTPS dev certificate for the dashboard)
 - Without Aspire: `dotnet run --project src/Tactics.Api --launch-profile http` + `npm run dev` in `client/` → http://localhost:5173
+- API docs (Development only): the **Scalar (API docs)** link next to `api` in the Aspire dashboard, or http://localhost:5257/scalar · OpenAPI JSON at http://localhost:5257/openapi/v1.json
+  - To play over HTTP: `POST /api/games` → `POST /api/games/{gameId}/join` → paste a `playerToken` into Scalar's auth field → `POST /api/games/{gameId}/actions`
 - .NET build: `dotnet build` (warnings are errors in every project: must be 0)
 - .NET tests: `dotnet test` (all test projects, Microsoft.Testing.Platform via `global.json`)
   - Core only (fast): `dotnet test --project tests/Tactics.Core.Tests`

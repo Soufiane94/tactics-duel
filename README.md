@@ -7,7 +7,7 @@ A two-player, turn-based fantasy tactics game that runs in the browser.
 > Working title. Built step by step as a learning project. See [`PLAN.md`](PLAN.md) for the rules, architecture and progress.
 
 ## Status
-Step 0: the skeleton runs. The API answers, and the Phaser canvas shows a message from it.
+Step 5: the game server runs. Two players with tokens can create, join and play a whole game over HTTP, and the C# rules engine judges every action. The browser client still shows the Step 0 boot screen; drawing the board is next.
 
 ## Stack
 - **Server:** .NET 10, ASP.NET Core Minimal APIs (SignalR and EF Core + PostgreSQL come later)
@@ -33,6 +33,7 @@ aspire certs trust
 aspire run
 ```
 Open the dashboard link printed in the terminal, then click the `client` URL.
+To try the API from the browser, click the **Scalar (API docs)** link next to `api` (Development only).
 
 Without Aspire, run these in two terminals:
 ```sh
@@ -54,7 +55,7 @@ npm run build
 | Path | What lives there |
 |---|---|
 | `src/Tactics.Core` | The rules engine: pure, deterministic C# |
-| `src/Tactics.Api` | HTTP endpoints (later: SignalR hub, storage) |
+| `src/Tactics.Api` | The game server: HTTP endpoints, tokens, in-memory games (later: SignalR hub, PostgreSQL) |
 | `src/Tactics.ServiceDefaults` | Shared telemetry, health checks, resilience |
 | `src/Tactics.AppHost` | Aspire: runs everything locally with one command |
 | `tests/` | xUnit v3 test projects |

@@ -1,6 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
+    <!-- The OpenAPI document (AddOpenApi / MapOpenApi) and the Scalar UI that reads it. Development only. -->
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Scalar.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      The hand-edited game data, copied next to the API's DLL (as content/...). SetupProvider reads it at startup.
+      Published too, so the Docker image (Step 13) has it.
+    -->
+    <None Include="..\..\content\**\*.json" LinkBase="content" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Tactics.Core\Tactics.Core.csproj" />
     <ProjectReference Include="..\Tactics.ServiceDefaults\Tactics.ServiceDefaults.csproj" />
   </ItemGroup>

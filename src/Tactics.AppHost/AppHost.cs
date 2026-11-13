@@ -7,7 +7,9 @@ var builder = DistributedApplication.CreateBuilder(args);
 // It probes the plain-http endpoint so it works even when the local HTTPS dev certificate
 // isn't trusted (fresh machines, CI). Nothing leaves localhost.
 var api = builder.AddProject<Projects.Tactics_Api>("api")
-    .WithHttpHealthCheck("/health", endpointName: "http");
+    .WithHttpHealthCheck("/health", endpointName: "http")
+    // A "Scalar (API docs)" link next to the API's URLs in the dashboard. The API serves it in Development only.
+    .WithUrlForEndpoint("http", _ => new() { Url = "/scalar", DisplayText = "Scalar (API docs)" });
 
 // The browser client (Vite dev server, npm install runs automatically).
 // WithReference injects the API's URL (API_HTTP, API_HTTPS) so vite.config.ts can proxy /api.
