@@ -58,8 +58,8 @@ public static partial class GameEngine
     }
 
     // The target rules: the right kind of target first (what), then the distance (where). Null means the actor
-    // can act on it. Step 4's available actions will ask this same function about every unit, so the targets
-    // the client highlights are exactly the ones Apply accepts.
+    // can act on it. GetAvailableActions asks this same function about every unit, so the targets the client
+    // highlights are exactly the ones Apply accepts.
     private static ActionOutcome.Rejected? CheckTarget(Unit actor, UnitType actorType, Unit target, UnitType targetType)
     {
         var isAlly = target.Owner == actor.Owner;

@@ -1,6 +1,6 @@
 namespace Tactics.Core.Model;
 
-/// <summary>Whether the game still accepts actions. A finished game rejects every action (Step 4).</summary>
+/// <summary>Whether the game still accepts actions. A finished game rejects every action with GameOver.</summary>
 public enum GameStatus
 {
     /// <summary>Players are taking turns.</summary>

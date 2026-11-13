@@ -9,12 +9,15 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Base resolution** — the fixed logical size the game draws in (here 960×640), whatever the window size. *(Step 0)*
 - **BFS (breadth-first search)** — explores from a start ring by ring, with a queue. When every step costs 1, it finds shortest paths. *(Step 2)*
 - **Blind spot** — the tiles closer than a unit's `MinRange`. It can't target anything there (the archer next to an enemy). *(Step 3)*
+- **Brute-force test** — tries every possible input and checks one property for each (every tile, every target: "listed ⇔ accepted"). *(Step 4)*
 - **Came-from map** — for each tile a search reached, the tile it came from. Following it backwards rebuilds the path. *(Step 2)*
 - **Canvas 2D renderer** — draws with the browser's CPU-based 2D API. Simple, but deprecated in Phaser 4. *(Step 0)*
 - **Central Package Management (CPM)** — every NuGet version lives once in `Directory.Packages.props`; projects list packages without versions. *(Step 0)*
 - **Clamp** — keep a value inside limits, such as HP between 0 and MaxHp. *(Step 3)*
 - **Closed hierarchy** — a base type with a fixed set of subtypes, so code can handle every case (`ActionOutcome`: `Accepted` or `Rejected`). *(Step 2)*
 - **Command (pattern)** — a request stored as data (`MoveAction`), so it can be checked, saved, sent and replayed. *(Step 2)*
+- **Command sourcing** — storing the requests (actions) and rebuilding the state by running them through the rules again. *(Step 4)*
+- **Contract test** — a test that pins a wire format (JSON) character for character, so every change is a conscious one. *(Step 4)*
 - **Damage floor** — the smallest damage any hit can do (here 1), so no defense makes a unit invulnerable. *(Step 3)*
 - **Damage table** — the damage of every attacker against every target, in one grid: the balance at a glance. *(Step 3)*
 - **Data-driven design** — numbers live in data files and rules in code, so balancing means editing JSON, not recompiling. *(Step 1)*
@@ -22,7 +25,9 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Dev proxy** — the Vite server forwards some paths (`/api`) to another server, so the browser sees one origin. *(Step 0)*
 - **DTO (data transfer object)** — a plain type shaped like a file or wire format, mapped to domain types after validation. *(Step 1)*
 - **Event (game event)** — a past-tense fact about what just happened (`UnitMoved`). The client animates it; the state stays the truth. *(Step 2)*
+- **Event sourcing** — storing what happened (events) and rebuilding the state by applying them in order. *(Step 4)*
 - **Flood fill** — spreading out from one tile to every tile connected to it, like paint. BFS is one way to do it. *(Step 2)*
+- **Fold (reduce)** — combining a list into one value step by step: `Aggregate` in LINQ, `reduce` in JavaScript. `Replay` folds `Apply` over the actions. *(Step 4)*
 - **Frame** — one redraw of the whole canvas. At 60 FPS, a frame lasts about 16.7 ms. *(Step 0)*
 - **Frontier** — the queue of tiles a search has found but not explored yet. *(Step 2)*
 - **Game balance** — tuning numbers and formulas so that no unit or choice is always the best one. *(Step 3)*
@@ -31,10 +36,13 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Game loop** — the endless cycle of update → render, run once per frame. *(Step 0)*
 - **Game setup** — everything needed to start a game: scenario, board, unit types and starting placements. *(Step 1)*
 - **Game state** — the whole game at one moment; the single source of truth that the screen draws. *(Step 1)*
+- **Guard test** — fails when a new case is added in one place but not in another that must list it too (`[JsonDerivedType]`). *(Step 4)*
 - **Health check** — an endpoint (`/health`) that says whether a service is ready. Aspire polls it. *(Step 0)*
 - **HMR (Hot Module Replacement)** — Vite swaps changed modules in the running page without a full reload. *(Step 0)*
 - **Immutable** — can't change after creation; "changing" it creates a new copy. *(Step 1)*
+- **Legal move generation** — listing every action a side may take right now (`GetAvailableActions`). The term comes from chess engines. *(Step 4)*
 - **Letterboxing** — the bars around the canvas when the window's shape differs from the game's aspect ratio. *(Step 0)*
+- **Lockstep** — online play where machines swap only inputs, and each runs the same deterministic game. Common in RTS games. *(Step 4)*
 - **Manhattan distance** — `|dx| + |dy|`: the number of grid steps between two tiles without diagonals. *(Step 1)*
 - **Microsoft.Testing.Platform (MTP)** — the new .NET test runner. Test projects are executables. *(Step 0)*
 - **Mutation test** — breaking the code on purpose (one number, one check) to prove that a test notices. *(Step 3)*
@@ -43,11 +51,14 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Overkill** — the part of a hit beyond the HP the target had left. *(Step 3)*
 - **Path reconstruction** — rebuilding a path by following came-from entries from the destination back to the start, then reversing it. *(Step 2)*
 - **Placement** — where one unit starts in a scenario. *(Step 1)*
+- **Playthrough** — one game played from start to end. Also the test helper that plays actions and keeps the log. *(Step 4)*
 - **Pure function** — its result depends only on its inputs, with no side effects (I/O, clock, randomness). *(Step 1)*
 - **Range band** — the distances from `MinRange` to `MaxRange` (Manhattan) where a target is valid. *(Step 3)*
 - **Reach map** — every tile one unit can reach this turn, with the shortest path to each (`ReachMap`). *(Step 2)*
 - **Record (C#)** — a type with value equality and `with` support; a natural fit for immutable data. *(Step 1)*
+- **Refresh (units)** — at the start of a side's turn, its units get their move and act back. *(Step 4)*
 - **Renderer** — the part of Phaser that turns game objects into pixels on the canvas. *(Step 0)*
+- **Replay** — rebuilding a game by running its action log again from the setup. *(Step 4)*
 - **Resource (Aspire)** — one thing the AppHost runs: a project, an executable, a container. *(Step 0)*
 - **Rule violation** — a stable code for why the engine refused an action (`NotYourTurn`, `DestinationNotReachable`…). *(Step 2)*
 - **Scale mode (`FIT`)** — how Phaser sizes the canvas to the window. `FIT` keeps the aspect ratio. *(Step 0)*
@@ -59,10 +70,13 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Smoke test** — a tiny test that proves the wiring works end to end, not the logic. *(Step 0)*
 - **Source of truth** — the one place a fact is stored. Everything else is derived from it. *(Step 1)*
 - **Targeting rules** — who may act on whom: enemies for damage, injured allies for a heal. *(Step 3)*
+- **Terminal state** — a state no action can leave, like `Finished`: every action gets `GameOver`. *(Step 4)*
 - **Test fixture** — fixed, known data that a test starts from. *(Step 1)*
 - **Tie-breaking** — the fixed rule that picks one result when several are equally good. Here, the neighbor order picks the path. *(Step 2)*
+- **Turn state machine** — the game's states (whose turn it is, finished) and the actions that move between them. *(Step 4)*
 - **Type discriminator** — the JSON field (`"type": "move"`) that says which subtype an object is. *(Step 2)*
 - **Validate, then apply** — check every rule before changing anything. A failed check returns a rejection, not an exception. *(Step 2)*
 - **Vite** — the dev server and bundler for the client: serves TypeScript on the fly, then builds `dist/` for production. *(Step 0)*
 - **WebGL renderer** — draws with the GPU through shaders. Fast, and Phaser 4's main renderer. *(Step 0)*
+- **Win condition** — the rule that decides when the game ends and who won (`Victory.WinnerOf`). *(Step 4)*
 - **`with` expression** — copies a record and changes some of its properties: `unit with { Hp = 5 }`. *(Step 1)*

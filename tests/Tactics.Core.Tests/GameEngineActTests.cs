@@ -9,7 +9,7 @@ namespace Tactics.Core.Tests;
 /// <see cref="GameEngine.Apply"/> with an <see cref="ActAction"/>: hit an enemy or heal an ally in range.
 /// Fixed test stats (power / defense / range): warrior 10 / 3 / 1, archer 8 / 1 / 2–3, mage 12 / 0 / 1–2,
 /// and the healer heals 5 at range 1–2. Every board has units on both sides, and every defeat leaves the
-/// loser another unit, so Step 4's victory check won't add events to these tests.
+/// loser another unit, so the victory check (<see cref="GameEngineVictoryTests"/>) adds no event to these tests.
 /// </summary>
 public sealed class GameEngineActTests
 {
@@ -125,11 +125,8 @@ public sealed class GameEngineActTests
             GameEngine.Apply(state, new ActAction(PlayerSide.One, "one-archer", "two-mage"))).State;
 
         var targetIt = GameEngine.Apply(after, new ActAction(PlayerSide.One, "one-mage", "two-mage"));
-
-        // Ending a turn comes in Step 4. Until then, a test hands the turn over by hand.
-        var actWithIt = GameEngine.Apply(
-            after with { CurrentPlayer = PlayerSide.Two },
-            new ActAction(PlayerSide.Two, "two-mage", "one-mage"));
+        var twosTurn = Assert.IsType<ActionOutcome.Accepted>(GameEngine.Apply(after, new EndTurnAction(PlayerSide.One))).State;
+        var actWithIt = GameEngine.Apply(twosTurn, new ActAction(PlayerSide.Two, "two-mage", "one-mage"));
 
         Assert.Equal(RuleViolation.TargetNotFound, Assert.IsType<ActionOutcome.Rejected>(targetIt).Code);
         Assert.Equal(RuleViolation.UnitNotFound, Assert.IsType<ActionOutcome.Rejected>(actWithIt).Code);

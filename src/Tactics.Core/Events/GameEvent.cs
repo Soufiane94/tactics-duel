@@ -14,6 +14,8 @@ namespace Tactics.Core.Events;
 [JsonDerivedType(typeof(UnitDamaged), "unitDamaged")]
 [JsonDerivedType(typeof(UnitHealed), "unitHealed")]
 [JsonDerivedType(typeof(UnitDefeated), "unitDefeated")]
+[JsonDerivedType(typeof(TurnEnded), "turnEnded")]
+[JsonDerivedType(typeof(GameWon), "gameWon")]
 public abstract record GameEvent;
 
 /// <summary>A unit walked to another tile. The path lets the client animate the walk step by step.</summary>
@@ -43,3 +45,16 @@ public sealed record UnitHealed(string UnitId, string ByUnitId, int Amount, int 
 /// <summary>A unit reached 0 HP and left the board. No later state contains it.</summary>
 /// <param name="UnitId">The unit that was defeated.</param>
 public sealed record UnitDefeated(string UnitId) : GameEvent;
+
+/// <summary>A turn ended and the other side's turn began. The client can show a banner for it.</summary>
+/// <param name="PreviousPlayer">The side whose turn just ended.</param>
+/// <param name="NextPlayer">The side that plays now. Its units can move and act again.</param>
+/// <param name="TurnNumber">The number of the turn that starts now: 2 when the first turn ends.</param>
+public sealed record TurnEnded(PlayerSide PreviousPlayer, PlayerSide NextPlayer, int TurnNumber) : GameEvent;
+
+/// <summary>
+/// The game is over and this side won. It's the last event of the action that ended the game, after the
+/// events that caused it. In v1 the loser has no units left (<see cref="Tactics.Core.Rules.Victory.WinnerOf"/>).
+/// </summary>
+/// <param name="Winner">The side that won.</param>
+public sealed record GameWon(PlayerSide Winner) : GameEvent;

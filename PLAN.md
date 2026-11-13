@@ -14,7 +14,7 @@ It's built in small steps, each followed by a learning report.
 - [x] Step 1 — Game state model (C#)
 - [x] Step 2 — Movement & pathfinding (C#)
 - [x] Step 3 — Attack & heal (C#)
-- [ ] Step 4 — Turns, victory & replay (C#)
+- [x] Step 4 — Turns, victory & replay (C#)
 - [ ] Step 5 — Game server v1 (in-memory API)
 - [ ] Step 6 — Phaser 101: draw the board
 - [ ] Step 7 — Input: select, move, act, end turn
@@ -845,3 +845,4 @@ Accounts and passwords · AI opponent · matchmaking · chat · native mobile ap
 - 2026-11-11 — Step 2 — the event family got its JSON discriminator (`"type": "unitMoved"`) now, together with the action's, instead of waiting for Step 4 — each family gets its JSON shape when its first type appears; Step 4 still adds the full round-trip suite.
 - 2026-11-12 — Step 3 — `CalculateHeal` takes `(healerType, targetType, targetHp)` instead of `(healerType, target)` — `Unit` has no `MaxHp`; it lives on the target's `UnitType` (approved in the Step 3 brief).
 - 2026-11-12 — Step 3 — the JSON shapes of `act`, `unitDamaged`, `unitHealed` and `unitDefeated` are pinned by tests now — same rule as Step 2: a type's shape is fixed when it appears, and it must be registered with `[JsonDerivedType]` anyway, or serializing it throws; Step 4 still adds the full round-trip suite.
+- 2026-11-13 — Step 4 — `GetAvailableActions` lists only the units that can still move or act, not every unit — on your turn, an empty list then means only End Turn is left, for the HUD (Step 8) and a future AI (approved in the Step 4 brief).

@@ -41,7 +41,13 @@ public static class AsciiBoard
     /// Parses the picture into the initial state of a game: turn 1, Player One to play, everyone at full HP.
     /// Unit ids follow the real content: "one-warrior", then "one-warrior-2" for a second one, in reading order.
     /// </summary>
-    public static GameState Parse(string map)
+    public static GameState Parse(string map) => GameEngine.CreateInitialState(ParseSetup(map));
+
+    /// <summary>
+    /// Parses the picture into a game setup, which is what <see cref="GameEngine.Replay"/> starts from.
+    /// Same rules as <see cref="Parse"/>, which is this plus <see cref="GameEngine.CreateInitialState"/>.
+    /// </summary>
+    public static GameSetup ParseSetup(string map)
     {
         var rows = map.Split('\n')
             .Select(line => line.Trim()) // also removes the '\r' of Windows line endings
@@ -103,8 +109,7 @@ public static class AsciiBoard
         }
 
         var board = new Board(width, rows.Count, obstacles.ToImmutable());
-        var setup = new GameSetup("ascii", board, DefaultUnitTypes, placements.ToImmutable());
-        return GameEngine.CreateInitialState(setup);
+        return new GameSetup("ascii", board, DefaultUnitTypes, placements.ToImmutable());
     }
 
     /// <summary>

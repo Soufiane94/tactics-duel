@@ -1,6 +1,8 @@
 using System.Collections.Immutable;
 using Tactics.Core.Actions;
+using Tactics.Core.Events;
 using Tactics.Core.Model;
+using Tactics.Core.Rules;
 
 namespace Tactics.Core;
 
@@ -41,8 +43,9 @@ public static partial class GameEngine
     }
 
     /// <summary>
-    /// Plays one action: first check it against the rules, then apply it. A broken rule is a normal answer,
-    /// not an exception: it comes back as <see cref="ActionOutcome.Rejected"/>, and nothing changes.
+    /// Plays one action: check it against the rules, apply it, then check whether someone has won.
+    /// A broken rule is a normal answer, not an exception: it comes back as <see cref="ActionOutcome.Rejected"/>,
+    /// and nothing changes.
     /// </summary>
     public static ActionOutcome Apply(GameState state, GameAction action)
     {
@@ -63,12 +66,29 @@ public static partial class GameEngine
         }
 
         // One case per action type. C# can't tell that this list is complete, hence the last arm.
-        return action switch
+        var outcome = action switch
         {
             MoveAction move => ApplyMove(state, move),
             ActAction act => ApplyAct(state, act),
+            EndTurnAction => ApplyEndTurn(state),
             _ => throw new ArgumentException($"The engine has no rules for {action.GetType().Name}.", nameof(action)),
         };
+
+        // The same last step for every action type, so no rule can forget it.
+        return outcome is ActionOutcome.Accepted accepted ? FinishIfWon(accepted) : outcome;
+    }
+
+    // Victory decides who has won; this applies it. The game is finished, the winner is set, and GameWon comes
+    // last, after the events that caused it: the hit, then the defeat, then the win.
+    private static ActionOutcome.Accepted FinishIfWon(ActionOutcome.Accepted accepted)
+    {
+        if (Victory.WinnerOf(accepted.State) is not { } winner)
+        {
+            return accepted;
+        }
+
+        var finished = accepted.State with { Status = GameStatus.Finished, Winner = winner };
+        return new ActionOutcome.Accepted(finished, accepted.Events.Add(new GameWon(winner)));
     }
 
     private static ActionOutcome.Rejected Reject(RuleViolation code, string message) => new(code, message);
