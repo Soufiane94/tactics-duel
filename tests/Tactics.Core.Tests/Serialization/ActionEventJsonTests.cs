@@ -8,7 +8,7 @@ namespace Tactics.Core.Tests.Serialization;
 
 /// <summary>
 /// Actions and events are saved and sent as JSON, with a "type" field that says which kind each one is.
-/// Step 4 adds a round trip for every action and event type; these tests pin the first two shapes.
+/// Each shape is pinned here as soon as its type exists. Step 4 adds a round trip for every action and event type.
 /// </summary>
 public sealed class ActionEventJsonTests
 {
@@ -59,6 +59,41 @@ public sealed class ActionEventJsonTests
         var back = JsonSerializer.Deserialize<GameEvent>(json, TacticsJson.Options);
         Assert.IsType<UnitMoved>(back);
         Assert.Equal(json, JsonSerializer.Serialize(back, TacticsJson.Options));
+    }
+
+    [Fact]
+    public void An_act_action_is_written_with_its_type()
+    {
+        GameAction action = new ActAction(PlayerSide.One, "one-archer", "two-warrior");
+
+        var json = JsonSerializer.Serialize(action, TacticsJson.Options);
+
+        // PLAN.md's request body (section 3), plus the player that the server fills in from the token.
+        Assert.Equal("""{"type":"act","actorId":"one-archer","targetId":"two-warrior","player":"one"}""", json);
+        Assert.Equal(action, JsonSerializer.Deserialize<GameAction>(json, TacticsJson.Options));
+    }
+
+    [Fact]
+    public void The_combat_events_have_the_contract_shapes()
+    {
+        // Character for character the examples in PLAN.md, section 3 (Events).
+        (GameEvent Event, string Json)[] cases =
+        [
+            (new UnitDamaged("two-warrior", "one-archer", Amount: 5, HpAfter: 23),
+                """{"type":"unitDamaged","unitId":"two-warrior","byUnitId":"one-archer","amount":5,"hpAfter":23}"""),
+            (new UnitHealed("one-warrior", "one-healer", Amount: 5, HpAfter: 25),
+                """{"type":"unitHealed","unitId":"one-warrior","byUnitId":"one-healer","amount":5,"hpAfter":25}"""),
+            (new UnitDefeated("two-mage"),
+                """{"type":"unitDefeated","unitId":"two-mage"}"""),
+        ];
+
+        Assert.All(cases, c =>
+        {
+            Assert.Equal(c.Json, JsonSerializer.Serialize(c.Event, TacticsJson.Options));
+
+            // These events hold no list, so plain record equality works on the way back (unlike UnitMoved).
+            Assert.Equal(c.Event, JsonSerializer.Deserialize<GameEvent>(c.Json, TacticsJson.Options));
+        });
     }
 
     [Fact]

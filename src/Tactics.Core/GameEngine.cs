@@ -66,6 +66,7 @@ public static partial class GameEngine
         return action switch
         {
             MoveAction move => ApplyMove(state, move),
+            ActAction act => ApplyAct(state, act),
             _ => throw new ArgumentException($"The engine has no rules for {action.GetType().Name}.", nameof(action)),
         };
     }

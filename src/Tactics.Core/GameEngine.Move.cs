@@ -23,7 +23,7 @@ public static partial class GameEngine
             return Reject(RuleViolation.NotYourUnit, $"That {type.Name} belongs to {Describe(unit.Owner)}.");
         }
 
-        // "Acted" before "moved": from Step 3, acting sets HasMoved too, and then acting is the real reason.
+        // "Acted" before "moved": acting sets HasMoved too (GameEngine.Act.cs), and then acting is the real reason.
         if (unit.HasActed)
         {
             return Reject(RuleViolation.AlreadyActed, $"This {type.Name} has already acted this turn, so it can't move.");

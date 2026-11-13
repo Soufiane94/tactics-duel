@@ -9,7 +9,7 @@ namespace Tactics.Core.Model;
 /// </summary>
 /// <param name="Board">The grid and its obstacles.</param>
 /// <param name="UnitTypes">Unit stats by type id, from this game's own setup.</param>
-/// <param name="Units">Units still on the board, in a stable order. Defeated units are removed (Step 3).</param>
+/// <param name="Units">Units still on the board, in a stable order. A unit that reaches 0 HP is removed.</param>
 /// <param name="CurrentPlayer">The side whose turn it is.</param>
 /// <param name="TurnNumber">Starts at 1 and goes up by 1 each time a turn ends.</param>
 /// <param name="Status">In progress or finished.</param>

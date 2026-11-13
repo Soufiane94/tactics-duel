@@ -24,6 +24,8 @@ One unit type per line, in `"unitTypes": [ … ]`:
 | `minRange` / `maxRange` | Target distance, in tiles (Manhattan) | at least 1, and min ≤ max |
 | `ability` | `"damage"` (hits enemies) or `"heal"` (heals injured allies) | one of the two |
 
+`power` and `defense` only meet in one file: `src/Tactics.Core/Rules/Combat.cs`. Today a hit does `power − defense` (at least 1), and a heal restores `power` (never past `maxHp`).
+
 ## scenarios/*.json
 - `id`, `name`: the scenario's key (e.g. `"classic"`) and display name.
 - `board`: `width`, `height`, and `obstacles` as `{ "x", "y" }` tiles. The origin is top-left, and y grows down.

@@ -11,6 +11,7 @@ namespace Tactics.Core.Actions;
 /// <param name="Player">The side asking. The server fills it in from the player's token, never from the request.</param>
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
 [JsonDerivedType(typeof(MoveAction), "move")]
+[JsonDerivedType(typeof(ActAction), "act")]
 public abstract record GameAction(PlayerSide Player);
 
 /// <summary>Walk one unit to a tile. The player only says where; the engine picks the shortest path.</summary>
@@ -18,3 +19,12 @@ public abstract record GameAction(PlayerSide Player);
 /// <param name="UnitId">The unit to move, e.g. "one-archer".</param>
 /// <param name="To">The tile to end on.</param>
 public sealed record MoveAction(PlayerSide Player, string UnitId, Position To) : GameAction(Player);
+
+/// <summary>
+/// Use one unit's ability on another unit. The actor's type decides what happens (damage an enemy or heal
+/// an ally), so one action covers both. Acting uses the actor up: it can't move or act again until its side's next turn.
+/// </summary>
+/// <param name="Player">The side asking.</param>
+/// <param name="ActorId">The unit that acts, e.g. "one-archer".</param>
+/// <param name="TargetId">The unit it acts on, e.g. "two-warrior".</param>
+public sealed record ActAction(PlayerSide Player, string ActorId, string TargetId) : GameAction(Player);

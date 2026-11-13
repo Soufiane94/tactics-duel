@@ -34,7 +34,7 @@ public sealed class GameEngineMoveTests
             """, AsciiBoard.Draw(after), ignoreLineEndingDifferences: true);
         var warrior = after.FindUnit("one-warrior")!;
         Assert.True(warrior.HasMoved);
-        Assert.False(warrior.HasActed); // it can still act (Step 3)
+        Assert.False(warrior.HasActed); // it can still act
     }
 
     [Fact]
@@ -114,7 +114,7 @@ public sealed class GameEngineMoveTests
     }
 
     [Theory]
-    [InlineData(true)] // what acting does from Step 3: it sets both flags
+    [InlineData(true)] // what acting really does: it sets both flags (GameEngineActTests plays it for real)
     [InlineData(false)]
     public void A_unit_that_acted_cannot_move(bool hasMoved)
     {

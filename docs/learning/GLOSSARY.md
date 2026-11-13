@@ -5,13 +5,18 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **ASCII board** — a text picture of a board (`W . h`) that tests turn into a game state. *(Step 1)*
 - **Aspire AppHost** — a C# program that describes the dev environment (services, apps, databases) and runs it with `aspire run`. *(Step 0)*
 - **Aspire dashboard** — a web page that shows every resource's state, logs, traces and environment variables. *(Step 0)*
+- **Authoritative server** — the server decides every outcome (legality, damage); clients only send requests. *(Step 3)*
 - **Base resolution** — the fixed logical size the game draws in (here 960×640), whatever the window size. *(Step 0)*
 - **BFS (breadth-first search)** — explores from a start ring by ring, with a queue. When every step costs 1, it finds shortest paths. *(Step 2)*
+- **Blind spot** — the tiles closer than a unit's `MinRange`. It can't target anything there (the archer next to an enemy). *(Step 3)*
 - **Came-from map** — for each tile a search reached, the tile it came from. Following it backwards rebuilds the path. *(Step 2)*
 - **Canvas 2D renderer** — draws with the browser's CPU-based 2D API. Simple, but deprecated in Phaser 4. *(Step 0)*
 - **Central Package Management (CPM)** — every NuGet version lives once in `Directory.Packages.props`; projects list packages without versions. *(Step 0)*
+- **Clamp** — keep a value inside limits, such as HP between 0 and MaxHp. *(Step 3)*
 - **Closed hierarchy** — a base type with a fixed set of subtypes, so code can handle every case (`ActionOutcome`: `Accepted` or `Rejected`). *(Step 2)*
 - **Command (pattern)** — a request stored as data (`MoveAction`), so it can be checked, saved, sent and replayed. *(Step 2)*
+- **Damage floor** — the smallest damage any hit can do (here 1), so no defense makes a unit invulnerable. *(Step 3)*
+- **Damage table** — the damage of every attacker against every target, in one grid: the balance at a glance. *(Step 3)*
 - **Data-driven design** — numbers live in data files and rules in code, so balancing means editing JSON, not recompiling. *(Step 1)*
 - **Deterministic** — the same inputs always give the same outputs: no clock, no randomness. *(Step 1)*
 - **Dev proxy** — the Vite server forwards some paths (`/api`) to another server, so the browser sees one origin. *(Step 0)*
@@ -20,6 +25,7 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Flood fill** — spreading out from one tile to every tile connected to it, like paint. BFS is one way to do it. *(Step 2)*
 - **Frame** — one redraw of the whole canvas. At 60 FPS, a frame lasts about 16.7 ms. *(Step 0)*
 - **Frontier** — the queue of tiles a search has found but not explored yet. *(Step 2)*
+- **Game balance** — tuning numbers and formulas so that no unit or choice is always the best one. *(Step 3)*
 - **Game engine** — an editor-based tool (Unity, Godot) that hosts your code inside its own app. *(Step 0)*
 - **Game framework** — a code library (Phaser) that you call from your own program. *(Step 0)*
 - **Game loop** — the endless cycle of update → render, run once per frame. *(Step 0)*
@@ -31,11 +37,14 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Letterboxing** — the bars around the canvas when the window's shape differs from the game's aspect ratio. *(Step 0)*
 - **Manhattan distance** — `|dx| + |dy|`: the number of grid steps between two tiles without diagonals. *(Step 1)*
 - **Microsoft.Testing.Platform (MTP)** — the new .NET test runner. Test projects are executables. *(Step 0)*
+- **Mutation test** — breaking the code on purpose (one number, one check) to prove that a test notices. *(Step 3)*
 - **Neighbours (4-way)** — the tiles up, right, down and left of a tile. No diagonals. *(Step 1)*
 - **Origin (game object)** — the anchor point of an object. `0.5` means it's positioned by its centre, `0` by its top-left corner. *(Step 0)*
+- **Overkill** — the part of a hit beyond the HP the target had left. *(Step 3)*
 - **Path reconstruction** — rebuilding a path by following came-from entries from the destination back to the start, then reversing it. *(Step 2)*
 - **Placement** — where one unit starts in a scenario. *(Step 1)*
 - **Pure function** — its result depends only on its inputs, with no side effects (I/O, clock, randomness). *(Step 1)*
+- **Range band** — the distances from `MinRange` to `MaxRange` (Manhattan) where a target is valid. *(Step 3)*
 - **Reach map** — every tile one unit can reach this turn, with the shortest path to each (`ReachMap`). *(Step 2)*
 - **Record (C#)** — a type with value equality and `with` support; a natural fit for immutable data. *(Step 1)*
 - **Renderer** — the part of Phaser that turns game objects into pixels on the canvas. *(Step 0)*
@@ -49,6 +58,7 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Service defaults** — shared Aspire setup for every service: telemetry, health checks, resilience, service discovery. *(Step 0)*
 - **Smoke test** — a tiny test that proves the wiring works end to end, not the logic. *(Step 0)*
 - **Source of truth** — the one place a fact is stored. Everything else is derived from it. *(Step 1)*
+- **Targeting rules** — who may act on whom: enemies for damage, injured allies for a heal. *(Step 3)*
 - **Test fixture** — fixed, known data that a test starts from. *(Step 1)*
 - **Tie-breaking** — the fixed rule that picks one result when several are equally good. Here, the neighbor order picks the path. *(Step 2)*
 - **Type discriminator** — the JSON field (`"type": "move"`) that says which subtype an object is. *(Step 2)*
