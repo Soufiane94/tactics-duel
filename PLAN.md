@@ -16,7 +16,7 @@ It's built in small steps, each followed by a learning report.
 - [x] Step 3 — Attack & heal (C#)
 - [x] Step 4 — Turns, victory & replay (C#)
 - [x] Step 5 — Game server v1 (in-memory API)
-- [ ] Step 6 — Phaser 101: draw the board
+- [x] Step 6 — Phaser 101: draw the board
 - [ ] Step 7 — Input: select, move, act, end turn
 - [ ] Step 8 — Game feel: animations & HUD
 - [ ] Step 9 — Art & sound pipeline (my style, my choice)
@@ -851,3 +851,8 @@ Accounts and passwords · AI opponent · matchmaking · chat · native mobile ap
 - 2026-11-13 — Step 5 — `Microsoft.AspNetCore.OpenApi` 10.0.15 is added to `Directory.Packages.props` — the plan's "built-in `AddOpenApi()`" ships in this package, not in the shared framework (approved in the Step 5 brief).
 - 2026-11-13 — Step 5 — `SubmitAction` checks `expectedSequence` before `Replay`, not after — the answer is the same, and a stale request costs no replay.
 - 2026-11-13 — Step 5 — small additions beyond the plan: a "Scalar (API docs)" link in the Aspire dashboard, structured logs in `GameService` (never a token or an invite code), and production-mode error tests — they make the step easier to see and to check (the link and the logs were in the Step 5 brief).
+- 2026-11-13 — Step 6 — `PLACEHOLDER_THEME` lives in `client/src/media/placeholder.ts`, with the placeholder sizes, the texture drawing (which `BootScene` calls) and the unit letter, not in `config.ts` — CLAUDE.md's art rule wants every placeholder visual in one file (approved in the Step 6 brief).
+- 2026-11-13 — Step 6 — no fixed "board origin" in `config.ts`: `layoutBoard(board)` centres any board size, `BoardRenderer` exposes it as `layout`, and the grid functions take it first (`tileToWorld(layout, pos)`, `worldToTile(layout, x, y)`) — the board's size comes from the scenario, and `worldToTile` needs it anyway to answer null outside the board.
+- 2026-11-13 — Step 6 — dev-only console commands (`window.tactics`, `client/src/game/debugCommands.ts`) — with no input before Step 7, every HP bar stayed full, and the reconcile's update and destroy paths never showed on screen (approved in the Step 6 brief).
+- 2026-11-13 — Step 6 — two more pure modules with tests, `game/reconcile.ts` and `game/unitDisplay.ts` — CLAUDE.md keeps pure logic out of Phaser classes so Vitest can test it.
+- 2026-11-13 — Step 6 — plain `/` (without `?mode=local`) keeps the Step 0 boot screen, plus a hint — Step 10's menu replaces it.

@@ -21,28 +21,40 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Command sourcing** — storing the requests (actions) and rebuilding the state by running them through the rules again. *(Step 4)*
 - **Compare-and-swap (CAS)** — a write that happens only if the value is still the one you expect, checked and written in one step. *(Step 5)*
 - **Constant-time comparison** — compares two secrets in a time that doesn't depend on where they differ, so timing leaks nothing. *(Step 5)*
+- **Container (Phaser)** — a game object that holds others and moves, scales or fades them as one. Its children are placed relative to it. *(Step 6)*
 - **Contract test** — a test that pins a wire format (JSON) character for character, so every change is a conscious one. *(Step 4)*
 - **Damage floor** — the smallest damage any hit can do (here 1), so no defense makes a unit invulnerable. *(Step 3)*
 - **Damage table** — the damage of every attacker against every target, in one grid: the balance at a glance. *(Step 3)*
 - **Data-driven design** — numbers live in data files and rules in code, so balancing means editing JSON, not recompiling. *(Step 1)*
+- **Debug commands** — dev-only commands typed in the browser console to drive the game, such as `tactics.move(...)`. Production builds leave them out. *(Step 6)*
+- **Delta time** — the milliseconds since the previous frame. A per-frame change multiplied by it runs at the same speed on any screen. *(Step 6)*
+- **Depth (z-order)** — the drawing order of game objects: a higher depth is drawn in front, like CSS `z-index`. *(Step 6)*
 - **Deterministic** — the same inputs always give the same outputs: no clock, no randomness. *(Step 1)*
 - **Dev proxy** — the Vite server forwards some paths (`/api`) to another server, so the browser sees one origin. *(Step 0)*
+- **Display list** — the ordered list of game objects a scene draws every frame. *(Step 6)*
 - **DTO (data transfer object)** — a plain type shaped like a file or wire format, mapped to domain types after validation. *(Step 1)*
 - **Event (game event)** — a past-tense fact about what just happened (`UnitMoved`). The client animates it; the state stays the truth. *(Step 2)*
 - **Event sourcing** — storing what happened (events) and rebuilding the state by applying them in order. *(Step 4)*
 - **Flood fill** — spreading out from one tile to every tile connected to it, like paint. BFS is one way to do it. *(Step 2)*
 - **Fold (reduce)** — combining a list into one value step by step: `Aggregate` in LINQ, `reduce` in JavaScript. `Replay` folds `Apply` over the actions. *(Step 4)*
 - **Frame** — one redraw of the whole canvas. At 60 FPS, a frame lasts about 16.7 ms. *(Step 0)*
+- **Frame-rate independent** — looks and plays the same at 30, 60 or 144 FPS, because it's computed from time, not counted in frames. *(Step 6)*
 - **Frontier** — the queue of tiles a search has found but not explored yet. *(Step 2)*
 - **Game balance** — tuning numbers and formulas so that no unit or choice is always the best one. *(Step 3)*
 - **Game engine** — an editor-based tool (Unity, Godot) that hosts your code inside its own app. *(Step 0)*
 - **Game framework** — a code library (Phaser) that you call from your own program. *(Step 0)*
 - **Game loop** — the endless cycle of update → render, run once per frame. *(Step 0)*
+- **Game object** — anything a scene can show or update: an Image, a Text, a Rectangle, a Container. *(Step 6)*
 - **Game setup** — everything needed to start a game: scenario, board, unit types and starting placements. *(Step 1)*
 - **Game state** — the whole game at one moment; the single source of truth that the screen draws. *(Step 1)*
+- **Generated texture** — a texture drawn in code (Graphics, then `generateTexture`) instead of loaded from an image file. *(Step 6)*
+- **Grid space** — positions counted in tiles, from the board's top-left tile `(0, 0)`. The server speaks it. *(Step 6)*
 - **Guard test** — fails when a new case is added in one place but not in another that must list it too (`[JsonDerivedType]`). *(Step 4)*
 - **Health check** — an endpoint (`/health`) that says whether a service is ready. Aspire polls it. *(Step 0)*
 - **HMR (Hot Module Replacement)** — Vite swaps changed modules in the running page without a full reload. *(Step 0)*
+- **HUD (heads-up display)** — the interface drawn over the game: turn, panels, buttons, messages. *(Step 6)*
+- **Idle animation** — a small looping motion (breathing, bobbing) that keeps waiting units looking alive. *(Step 6)*
+- **Image (Phaser)** — a game object that shows a texture. A Sprite is an Image that can also play frame animations. *(Step 6)*
 - **Immutable** — can't change after creation; "changing" it creates a new copy. *(Step 1)*
 - **Legal move generation** — listing every action a side may take right now (`GetAvailableActions`). The term comes from chess engines. *(Step 4)*
 - **Letterboxing** — the bars around the canvas when the window's shape differs from the game's aspect ratio. *(Step 0)*
@@ -55,6 +67,8 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Optimistic concurrency** — no lock while the user thinks; the write checks that nothing changed since the read (here `expectedSequence`). *(Step 5)*
 - **Origin (game object)** — the anchor point of an object. `0.5` means it's positioned by its centre, `0` by its top-left corner. *(Step 0)*
 - **Overkill** — the part of a hit beyond the HP the target had left. *(Step 3)*
+- **Parallel scenes** — scenes that run at the same time, such as the game and its HUD on top (`scene.launch`). *(Step 6)*
+- **Pass and play** — a local mode: two players share one screen and take turns. *(Step 6)*
 - **Path reconstruction** — rebuilding a path by following came-from entries from the destination back to the start, then reversing it. *(Step 2)*
 - **Per-player view** — the game as one player may see it: their side, and actions only on their turn. Fog of war would filter it. *(Step 5)*
 - **Placement** — where one unit starts in a scenario. *(Step 1)*
@@ -63,8 +77,10 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Pure function** — its result depends only on its inputs, with no side effects (I/O, clock, randomness). *(Step 1)*
 - **Range band** — the distances from `MinRange` to `MaxRange` (Manhattan) where a target is valid. *(Step 3)*
 - **Reach map** — every tile one unit can reach this turn, with the shortest path to each (`ReachMap`). *(Step 2)*
+- **Reconcile** — make the screen match a new state, matching items by id: create the new ones, update the known ones, destroy the missing ones. *(Step 6)*
 - **Record (C#)** — a type with value equality and `with` support; a natural fit for immutable data. *(Step 1)*
 - **Refresh (units)** — at the start of a side's turn, its units get their move and act back. *(Step 4)*
+- **Render from state** — the screen is redrawn from the latest state, never edited by hand. *(Step 6)*
 - **Renderer** — the part of Phaser that turns game objects into pixels on the canvas. *(Step 0)*
 - **Replay** — rebuilding a game by running its action log again from the setup. *(Step 4)*
 - **Resource (Aspire)** — one thing the AppHost runs: a project, an executable, a container. *(Step 0)*
@@ -84,8 +100,10 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Terminal state** — a state no action can leave, like `Finished`: every action gets `GameOver`. *(Step 4)*
 - **Test fixture** — fixed, known data that a test starts from. *(Step 1)*
 - **Test host** — the real app running in memory for tests (`WebApplicationFactory`): the whole HTTP pipeline, no network. *(Step 5)*
+- **Texture** — image data kept on the GPU, which any number of game objects can show. *(Step 6)*
 - **Tick** — one run of a real-time game server's update loop, often 20 to 60 per second. A turn-based server needs none. *(Step 5)*
 - **Tie-breaking** — the fixed rule that picks one result when several are equally good. Here, the neighbor order picks the path. *(Step 2)*
+- **Tint** — a colour multiplied into a texture's pixels as it's drawn. Phaser 4: `setTint`, plus `setTintMode` for other blends. *(Step 6)*
 - **Turn state machine** — the game's states (whose turn it is, finished) and the actions that move between them. *(Step 4)*
 - **Type discriminator** — the JSON field (`"type": "move"`) that says which subtype an object is. *(Step 2)*
 - **Validate, then apply** — check every rule before changing anything. A failed check returns a rejection, not an exception. *(Step 2)*
@@ -94,3 +112,4 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Win condition** — the rule that decides when the game ends and who won (`Victory.WinnerOf`). *(Step 4)*
 - **Wire contract** — the JSON shapes that client and server agree on: DTOs on the server, `types.ts` in the client. *(Step 5)*
 - **`with` expression** — copies a record and changes some of its properties: `unit with { Hp = 5 }`. *(Step 1)*
+- **World space** — positions counted in game pixels, from the top-left corner of the canvas. The screen speaks it. *(Step 6)*
