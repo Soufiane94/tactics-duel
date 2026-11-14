@@ -17,6 +17,8 @@ export function readLaunchMode(search: string): LaunchMode {
  */
 export interface GameSession {
   readonly gameId: string;
+  /** True if this browser holds `side`'s seat: both seats in pass & play, one online. */
+  holds(side: PlayerSide): boolean;
   /** The token to send while `side` is the player to move. */
   tokenFor(side: PlayerSide): string;
 }
@@ -26,7 +28,25 @@ export interface GameSession {
  * game (Step 10 keeps sessions in `localStorage`).
  */
 export function localSession(gameId: string, tokens: Readonly<Record<PlayerSide, string>>): GameSession {
-  return { gameId, tokenFor: (side) => tokens[side] };
+  return { gameId, holds: () => true, tokenFor: (side) => tokens[side] };
+}
+
+/**
+ * The view to put on screen. A view belongs to one player: its `yourSide` and `availableActions` depend on the token
+ * it was fetched with, and the server answers an action with the sender's view. So after End Turn, the answer is the
+ * view of the player who now waits, with nothing to click. In pass & play, this browser also holds the seat to move,
+ * so it fetches that seat's view: one more request per turn. Online, it holds one seat, so the view stays as it is.
+ */
+export async function viewToShow(
+  api: Pick<ApiClient, "getView">,
+  session: GameSession,
+  view: GameView,
+): Promise<GameView> {
+  const toMove = view.currentPlayer;
+  if (view.status === "finished" || view.yourSide === toMove || !session.holds(toMove)) {
+    return view;
+  }
+  return api.getView(session.gameId, session.tokenFor(toMove));
 }
 
 /** The part of `ApiClient` that starting a game needs. Tests pass a small fake instead. */
@@ -36,13 +56,13 @@ export type LobbyApi = Pick<ApiClient, "createGame" | "joinGame" | "getView">;
  * Starts a local game: two players, one screen. It's the real lobby, played by one browser:
  * 1. create the game: we hold seat one and get the invite code;
  * 2. join it with that code: we hold seat two as well;
- * 3. fetch the view with the current player's token. A view belongs to one player (its `yourSide` and
- *    `availableActions` depend on the token), and the first one on screen should be the player to move.
+ * 3. show the view of the player to move. Joining answers with seat two's view, but Player One moves first, so
+ *    `viewToShow` fetches seat one's.
  */
 export async function startLocalGame(api: LobbyApi): Promise<{ session: GameSession; view: GameView }> {
   const created = await api.createGame();
   const joined = await api.joinGame(created.gameId, created.inviteCode);
   const session = localSession(created.gameId, { one: created.playerToken, two: joined.playerToken });
-  const view = await api.getView(session.gameId, session.tokenFor(joined.view.currentPlayer));
+  const view = await viewToShow(api, session, joined.view);
   return { session, view };
 }

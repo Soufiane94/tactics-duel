@@ -11,6 +11,7 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **BFS (breadth-first search)** — explores from a start ring by ring, with a queue. When every step costs 1, it finds shortest paths. *(Step 2)*
 - **Blind spot** — the tiles closer than a unit's `MinRange`. It can't target anything there (the archer next to an enemy). *(Step 3)*
 - **Brute-force test** — tries every possible input and checks one property for each (every tile, every target: "listed ⇔ accepted"). *(Step 4)*
+- **Busy state** — the input state while the client waits for the server (from Step 8, for an animation too). Clicks and keys are ignored, so a double click can't send twice. *(Step 7)*
 - **Came-from map** — for each tile a search reached, the tile it came from. Following it backwards rebuilds the path. *(Step 2)*
 - **Canvas 2D renderer** — draws with the browser's CPU-based 2D API. Simple, but deprecated in Phaser 4. *(Step 0)*
 - **Capability token** — a secret that grants a right by itself, with no account behind it: the player token is a seat. *(Step 5)*
@@ -34,6 +35,7 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Display list** — the ordered list of game objects a scene draws every frame. *(Step 6)*
 - **DTO (data transfer object)** — a plain type shaped like a file or wire format, mapped to domain types after validation. *(Step 1)*
 - **Event (game event)** — a past-tense fact about what just happened (`UnitMoved`). The client animates it; the state stays the truth. *(Step 2)*
+- **Event propagation** — an input event passed on from the object under the pointer to the whole scene. `event.stopPropagation()` ends it early. *(Step 7)*
 - **Event sourcing** — storing what happened (events) and rebuilding the state by applying them in order. *(Step 4)*
 - **Flood fill** — spreading out from one tile to every tile connected to it, like paint. BFS is one way to do it. *(Step 2)*
 - **Fold (reduce)** — combining a list into one value step by step: `Aggregate` in LINQ, `reduce` in JavaScript. `Replay` folds `Apply` over the actions. *(Step 4)*
@@ -47,15 +49,22 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Game object** — anything a scene can show or update: an Image, a Text, a Rectangle, a Container. *(Step 6)*
 - **Game setup** — everything needed to start a game: scenario, board, unit types and starting placements. *(Step 1)*
 - **Game state** — the whole game at one moment; the single source of truth that the screen draws. *(Step 1)*
+- **Game timer** — a call scheduled on the scene's clock (`this.time.delayedCall`). It pauses with the scene and is destroyed when the scene stops. *(Step 7)*
 - **Generated texture** — a texture drawn in code (Graphics, then `generateTexture`) instead of loaded from an image file. *(Step 6)*
 - **Grid space** — positions counted in tiles, from the board's top-left tile `(0, 0)`. The server speaks it. *(Step 6)*
 - **Guard test** — fails when a new case is added in one place but not in another that must list it too (`[JsonDerivedType]`). *(Step 4)*
 - **Health check** — an endpoint (`/health`) that says whether a service is ready. Aspire polls it. *(Step 0)*
+- **Highlight** — a tile lit up to show an option: where the selected unit can move, what it can act on. *(Step 7)*
+- **Hit test** — finding which object is under the pointer. In the DOM the browser does it; on a canvas, the engine or your own maths does. *(Step 7)*
 - **HMR (Hot Module Replacement)** — Vite swaps changed modules in the running page without a full reload. *(Step 0)*
+- **Hover** — the pointer resting over something without clicking. Here, an outline on the tile under the pointer. *(Step 7)*
 - **HUD (heads-up display)** — the interface drawn over the game: turn, panels, buttons, messages. *(Step 6)*
 - **Idle animation** — a small looping motion (breathing, bobbing) that keeps waiting units looking alive. *(Step 6)*
 - **Image (Phaser)** — a game object that shows a texture. A Sprite is an Image that can also play frame animations. *(Step 6)*
 - **Immutable** — can't change after creation; "changing" it creates a new copy. *(Step 1)*
+- **Input state machine** — the client's input states (idle, unit selected, busy, opponent's turn, game over) and what each click or key does in each. *(Step 7)*
+- **Interactive object** — a game object that Phaser hit-tests for pointer events, after `setInteractive()`. *(Step 7)*
+- **Key repeat** — holding a key makes the browser send `keydown` again and again; those copies have `event.repeat === true`. *(Step 7)*
 - **Legal move generation** — listing every action a side may take right now (`GetAvailableActions`). The term comes from chess engines. *(Step 4)*
 - **Letterboxing** — the bars around the canvas when the window's shape differs from the game's aspect ratio. *(Step 0)*
 - **Lockstep** — online play where machines swap only inputs, and each runs the same deterministic game. Common in RTS games. *(Step 4)*
@@ -73,6 +82,7 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Per-player view** — the game as one player may see it: their side, and actions only on their turn. Fog of war would filter it. *(Step 5)*
 - **Placement** — where one unit starts in a scenario. *(Step 1)*
 - **Playthrough** — one game played from start to end. Also the test helper that plays actions and keeps the log. *(Step 4)*
+- **Pointer** — Phaser's one object for mouse, touch and pen input: its position, its buttons, and where it is in world space. *(Step 7)*
 - **ProblemDetails** — the standard JSON error body (RFC 9457): `type`, `title`, `status`, `detail`, plus extensions such as `code`. *(Step 5)*
 - **Pure function** — its result depends only on its inputs, with no side effects (I/O, clock, randomness). *(Step 1)*
 - **Range band** — the distances from `MinRange` to `MaxRange` (Manhattan) where a target is valid. *(Step 3)*
@@ -84,6 +94,7 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Renderer** — the part of Phaser that turns game objects into pixels on the canvas. *(Step 0)*
 - **Replay** — rebuilding a game by running its action log again from the setup. *(Step 4)*
 - **Resource (Aspire)** — one thing the AppHost runs: a project, an executable, a container. *(Step 0)*
+- **Resync** — after a 409, fetch the game again and show it, instead of sending the action again. *(Step 7)*
 - **Rule violation** — a stable code for why the engine refused an action (`NotYourTurn`, `DestinationNotReachable`…). *(Step 2)*
 - **Scalar** — a web page that reads an OpenAPI document and lets you call the API from the browser (`/scalar`). *(Step 5)*
 - **Scale mode (`FIT`)** — how Phaser sizes the canvas to the window. `FIT` keeps the aspect ratio. *(Step 0)*
@@ -91,6 +102,7 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Scene** — one self-contained screen of the game, with its own objects and lifecycle. *(Step 0)*
 - **Scene key** — a scene's unique name (`"BootScene"`), used to start or stop it. *(Step 0)*
 - **Scene lifecycle** — `init → preload → create`, then `update` every frame. *(Step 0)*
+- **Screen space** — the pointer's position on the canvas, in game pixels, before the camera (`pointer.x`). Seen through the camera, it's world space (`pointer.worldX`). *(Step 7)*
 - **Sequence number** — how many actions a game has played. A request sends the one it saw as `expectedSequence`. *(Step 5)*
 - **Service defaults** — shared Aspire setup for every service: telemetry, health checks, resilience, service discovery. *(Step 0)*
 - **Setup snapshot** — the setup a game was created with, kept with the game so editing `content/` never changes it. *(Step 5)*
@@ -101,9 +113,11 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Test fixture** — fixed, known data that a test starts from. *(Step 1)*
 - **Test host** — the real app running in memory for tests (`WebApplicationFactory`): the whole HTTP pipeline, no network. *(Step 5)*
 - **Texture** — image data kept on the GPU, which any number of game objects can show. *(Step 6)*
+- **Thin client** — a client that shows the state and asks the server, but decides nothing: the server's lists say what's allowed. *(Step 7)*
 - **Tick** — one run of a real-time game server's update loop, often 20 to 60 per second. A turn-based server needs none. *(Step 5)*
 - **Tie-breaking** — the fixed rule that picks one result when several are equally good. Here, the neighbor order picks the path. *(Step 2)*
 - **Tint** — a colour multiplied into a texture's pixels as it's drawn. Phaser 4: `setTint`, plus `setTintMode` for other blends. *(Step 6)*
+- **Transition (state machine)** — one step of a state machine: in a given state, an event leads to the next state. Here it can also return an action to send. *(Step 7)*
 - **Turn state machine** — the game's states (whose turn it is, finished) and the actions that move between them. *(Step 4)*
 - **Type discriminator** — the JSON field (`"type": "move"`) that says which subtype an object is. *(Step 2)*
 - **Validate, then apply** — check every rule before changing anything. A failed check returns a rejection, not an exception. *(Step 2)*

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { ApiError } from "../net/ApiClient";
+import type { PlayOutcome } from "../net/play";
+import { view as fakeView } from "../test/fixtures";
 import { createDebugCommands, type DebugTarget } from "./debugCommands";
-import type { GameAction, GameView, SubmitActionResponse } from "./types";
+import type { GameAction, GameView } from "./types";
 
 /** A fake console that keeps what was printed. */
 function fakeLog() {
@@ -16,21 +17,25 @@ function fakeLog() {
   };
 }
 
-/** A fake scene that records the actions it's asked to play, and answers with `answer`. */
-function fakeTarget(answer: () => Promise<SubmitActionResponse>, view: GameView | null = null) {
+/** A fake scene that records the actions it's asked to play, and answers with `outcome`. */
+function fakeTarget(outcome: PlayOutcome, view: GameView | null = null) {
   const played: GameAction[] = [];
   const target: DebugTarget = {
-    submit: (action) => {
+    play: (action) => {
       played.push(action);
-      return answer();
+      return Promise.resolve(outcome);
     },
     currentView: () => view,
   };
   return { played, target };
 }
 
-const accepted = (sequence: number) => () =>
-  Promise.resolve({ sequence, events: [], view: {} as GameView } satisfies SubmitActionResponse);
+const accepted = (sequence: number): PlayOutcome => ({
+  kind: "accepted",
+  view: fakeView({ sequence }),
+  events: [],
+  message: null,
+});
 
 describe("createDebugCommands", () => {
   it("sends the actions of the API contract", async () => {
@@ -59,18 +64,38 @@ describe("createDebugCommands", () => {
   });
 
   it("prints the rule code when the server refuses the action", async () => {
-    const refusal = new ApiError({
-      title: "Rule violation",
-      status: 422,
+    const { target } = fakeTarget({
+      kind: "rejected",
+      message: "Warrior can't reach (0, 0) this turn.",
       code: "DestinationNotReachable",
-      detail: "Warrior can't reach (0, 0) this turn.",
     });
-    const { target } = fakeTarget(() => Promise.reject(refusal));
     const { lines, log } = fakeLog();
 
     await createDebugCommands(target, log).move("one-warrior", 0, 0);
 
     expect(lines).toEqual([["warn", "Not played (DestinationNotReachable). Warrior can't reach (0, 0) this turn."]]);
+  });
+
+  it("prints only the message when a refusal has no code (no network)", async () => {
+    const { target } = fakeTarget({ kind: "rejected", message: "Can't reach the server.", code: null });
+    const { lines, log } = fakeLog();
+
+    await createDebugCommands(target, log).endTurn();
+
+    expect(lines).toEqual([["warn", "Not played. Can't reach the server."]]);
+  });
+
+  it("says when the view on screen was out of date", async () => {
+    const { target } = fakeTarget({
+      kind: "resynced",
+      view: fakeView({ sequence: 9 }),
+      message: "The game had changed.",
+    });
+    const { lines, log } = fakeLog();
+
+    await createDebugCommands(target, log).endTurn();
+
+    expect(lines).toEqual([["warn", "Not played (SequenceConflict). The game had changed."]]);
   });
 
   it("lists the units of the view on screen", () => {

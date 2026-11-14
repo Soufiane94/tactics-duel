@@ -1,25 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { GameView, PlayerSide } from "../game/types";
-import { readLaunchMode, startLocalGame, type LobbyApi } from "./session";
+import { GAME_ID as gameId, view } from "../test/fixtures";
+import { localSession, readLaunchMode, startLocalGame, viewToShow, type GameSession, type LobbyApi } from "./session";
 
-const gameId = "0b8f6e2a-61c4-7d0e-9a35-2f1c8d4e5b6a";
-
-/** A small but complete view of a fresh game (Player One to move), as `side` sees it. */
+/** A view of a fresh game (Player One to move), as `side` sees it. */
 function freshView(side: PlayerSide): GameView {
-  return {
-    gameId,
-    sequence: 0,
-    yourSide: side,
-    currentPlayer: "one",
-    turnNumber: 1,
-    status: "inProgress",
-    winner: null,
-    opponentJoined: side === "two",
-    board: { width: 8, height: 8, obstacles: [] },
-    unitTypes: [],
-    units: [],
-    availableActions: [],
-  };
+  return view({ yourSide: side, opponentJoined: side === "two" });
 }
 
 describe("readLaunchMode", () => {
@@ -61,5 +47,55 @@ describe("startLocalGame", () => {
     expect(session.gameId).toBe(gameId);
     expect(session.tokenFor("one")).toBe("token-one");
     expect(session.tokenFor("two")).toBe("token-two");
+    expect(session.holds("one") && session.holds("two")).toBe(true);
+  });
+});
+
+describe("viewToShow", () => {
+  const bothSeats = localSession(gameId, { one: "token-one", two: "token-two" });
+  const seatOne: GameSession = { gameId, holds: (side) => side === "one", tokenFor: () => "token-one" };
+
+  /** A fake `getView` that writes down the tokens it's called with. */
+  function fakeApi(answer: GameView) {
+    const tokens: string[] = [];
+    const api = {
+      getView: (_id: string, token: string) => {
+        tokens.push(token);
+        return Promise.resolve(answer);
+      },
+    };
+    return { api, tokens };
+  }
+
+  it("keeps a view whose player is the one to move, without a request", async () => {
+    const { api, tokens } = fakeApi(freshView("two"));
+    const playerOnesTurn = freshView("one");
+
+    expect(await viewToShow(api, bothSeats, playerOnesTurn)).toBe(playerOnesTurn);
+    expect(tokens).toEqual([]);
+  });
+
+  it("fetches the view of the player to move when this browser holds that seat (pass & play)", async () => {
+    const playerOnesView = freshView("one");
+    const { api, tokens } = fakeApi(playerOnesView);
+
+    expect(await viewToShow(api, bothSeats, freshView("two"))).toBe(playerOnesView);
+    expect(tokens).toEqual(["token-one"]);
+  });
+
+  it("keeps the view when this browser doesn't hold the seat to move (online)", async () => {
+    const { api, tokens } = fakeApi(freshView("two"));
+    const waiting = view({ yourSide: "one", currentPlayer: "two" });
+
+    expect(await viewToShow(api, seatOne, waiting)).toBe(waiting);
+    expect(tokens).toEqual([]);
+  });
+
+  it("keeps the view of a finished game: there's nothing left to play from either seat", async () => {
+    const { api, tokens } = fakeApi(freshView("one"));
+    const finished = view({ yourSide: "two", currentPlayer: "one", status: "finished", winner: "one" });
+
+    expect(await viewToShow(api, bothSeats, finished)).toBe(finished);
+    expect(tokens).toEqual([]);
   });
 });

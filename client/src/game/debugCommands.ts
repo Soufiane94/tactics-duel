@@ -1,9 +1,10 @@
-import { ApiError, errorMessage } from "../net/ApiClient";
-import type { GameAction, GameView, SubmitActionResponse } from "./types";
+import type { PlayOutcome } from "../net/play";
+import type { GameAction, GameView } from "./types";
 
-/** What GameScene lends the console: a way to play an action, and the view on screen. */
+/** What GameScene lends the console: the way clicks play an action, and the view on screen. */
 export interface DebugTarget {
-  submit(action: GameAction): Promise<SubmitActionResponse>;
+  /** Plays an action exactly as a click does: same request, same screen update, same message on the canvas. */
+  play(action: GameAction): Promise<PlayOutcome>;
   currentView(): GameView | null;
 }
 
@@ -29,17 +30,26 @@ declare global {
 type Log = Pick<Console, "info" | "warn" | "table">;
 
 /**
- * Builds the commands. Each one sends a real action, which the server judges exactly as it will judge a click
- * (Step 7). The console then shows the server's answer: the events, or the refusal with its rule code.
+ * Builds the commands. Each one plays a real action through the same path as a click, so the server judges it the
+ * same way and the canvas shows the result. The console adds the details: the events, or the refusal's rule code.
+ * Clicks only send what `availableActions` lists, so the console is the way to watch the server refuse something.
  */
 export function createDebugCommands(target: DebugTarget, log: Log = console): DebugCommands {
   const play = async (action: GameAction): Promise<void> => {
-    try {
-      const { sequence, events } = await target.submit(action);
-      log.info(`Action ${sequence} accepted. What happened:`, events);
-    } catch (error) {
-      const code = error instanceof ApiError && error.code !== undefined ? ` (${error.code})` : "";
-      log.warn(`Not played${code}. ${errorMessage(error)}`);
+    const outcome = await target.play(action);
+    switch (outcome.kind) {
+      case "accepted":
+        log.info(`Action ${outcome.view.sequence} accepted. What happened:`, outcome.events);
+        if (outcome.message !== null) {
+          log.warn(outcome.message);
+        }
+        break;
+      case "rejected":
+        log.warn(`Not played${outcome.code === null ? "" : ` (${outcome.code})`}. ${outcome.message}`);
+        break;
+      case "resynced":
+        log.warn(`Not played (SequenceConflict). ${outcome.message}`);
+        break;
     }
   };
 
@@ -60,8 +70,8 @@ export function createDebugCommands(target: DebugTarget, log: Log = console): De
 }
 
 /**
- * In dev builds only, puts the commands on `window.tactics`, so you can play from the browser console before Step 7
- * adds clicks. `npm run build` sets `import.meta.env.DEV` to false, so the bundler drops this code from production.
+ * In dev builds only, puts the commands on `window.tactics`, so you can play or test from the browser console.
+ * `npm run build` sets `import.meta.env.DEV` to false, so the bundler drops this code from production.
  * Returns a function that removes the commands again.
  */
 export function installDebugCommands(target: DebugTarget): () => void {

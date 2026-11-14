@@ -17,7 +17,7 @@ It's built in small steps, each followed by a learning report.
 - [x] Step 4 — Turns, victory & replay (C#)
 - [x] Step 5 — Game server v1 (in-memory API)
 - [x] Step 6 — Phaser 101: draw the board
-- [ ] Step 7 — Input: select, move, act, end turn
+- [x] Step 7 — Input: select, move, act, end turn
 - [ ] Step 8 — Game feel: animations & HUD
 - [ ] Step 9 — Art & sound pipeline (my style, my choice)
 - [ ] Step 10 — Lobby: create, invite, join
@@ -856,3 +856,8 @@ Accounts and passwords · AI opponent · matchmaking · chat · native mobile ap
 - 2026-11-13 — Step 6 — dev-only console commands (`window.tactics`, `client/src/game/debugCommands.ts`) — with no input before Step 7, every HP bar stayed full, and the reconcile's update and destroy paths never showed on screen (approved in the Step 6 brief).
 - 2026-11-13 — Step 6 — two more pure modules with tests, `game/reconcile.ts` and `game/unitDisplay.ts` — CLAUDE.md keeps pure logic out of Phaser classes so Vitest can test it.
 - 2026-11-13 — Step 6 — plain `/` (without `?mode=local`) keeps the Step 0 boot screen, plus a hint — Step 10's menu replaces it.
+- 2026-11-14 — Step 7 — `InputController` returns only the action to send (`transition(state, event, view) → { state, request }`); select and deselect are states that the scene draws, not intents — one source of truth, and an answer can end a selection without a separate "deselect" (approved in the Step 7 brief).
+- 2026-11-14 — Step 7 — a status line ("Turn 3 · Player Two to play", "Player One wins!") joins the temporary End Turn button and message text, all in `client/src/game/TurnControls.ts` — in pass & play, nothing else shows whose turn it is or that the game is over (approved in the Step 7 brief).
+- 2026-11-14 — Step 7 — in pass & play, an accepted action can cost a second request: after a turn change, `viewToShow` GETs the view with the next player's token — the server answers with the sender's view, whose `availableActions` is empty once the turn passes (in the Step 7 brief).
+- 2026-11-14 — Step 7 — the console commands stay and go through the same `play` path as clicks; network errors show on the canvas too, like 422s — clicks only send listed actions, so the console is the way to see a refusal on screen (approved in the Step 7 brief).
+- 2026-11-14 — Step 7 — more pure modules with tests: `game/viewQueries.ts`, `game/highlights.ts`, `game/turnText.ts`, `net/play.ts`, plus shared test data in `client/src/test/fixtures.ts` — CLAUDE.md keeps pure logic out of Phaser classes so Vitest can test it.

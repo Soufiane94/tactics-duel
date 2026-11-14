@@ -11,3 +11,4 @@ One report per step: my course notes for learning game development. New terms go
 | 4 | [Turns, victory & replay](step-04-turns-victory-replay.md) | Turns alternate, the last side with units wins, and `Replay` rebuilds any game from its action log. |
 | 5 | [Game server v1](step-05-game-server.md) | Two players with tokens create, join and play a whole game over HTTP; the server judges every action with `Tactics.Core`. |
 | 6 | [Phaser 101: draw the board](step-06-draw-the-board.md) | `/?mode=local` starts a real game, and the browser draws the server's board and units, HP bars included, kept in sync by unit id. |
+| 7 | [Input: select, move, act, end turn](step-07-input.md) | A whole local game plays with mouse and keyboard: an input state machine picks actions from `availableActions`, and the server judges them. |

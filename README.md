@@ -7,7 +7,7 @@ A two-player, turn-based fantasy tactics game that runs in the browser.
 > Working title. Built step by step as a learning project. See [`PLAN.md`](PLAN.md) for the rules, architecture and progress.
 
 ## Status
-Step 6: the browser draws the game. `/?mode=local` starts a real game on the server, and the Phaser client draws the board, obstacles and units with HP bars from the server's view. Moves can be played from the browser console in dev builds; clicking to play is next.
+Step 7: a whole game plays in the browser. `/?mode=local` starts a game on the server for two players on one screen. Click a unit to light up where it can move and what it can hit, as the server lists it, then click to move or act, and press `E` to end the turn. The server judges every action. Animations and a HUD are next.
 
 ## Stack
 - **Server:** .NET 10, ASP.NET Core Minimal APIs (SignalR and EF Core + PostgreSQL come later)
@@ -33,7 +33,7 @@ aspire certs trust
 aspire run
 ```
 Open the dashboard link printed in the terminal, then click the `client` URL.
-Add `/?mode=local` to that address to start a local game (two players, one screen).
+Add `/?mode=local` to that address to start a local game (two players, one screen). Click one of your units, then a lit tile to move or a yellow target to act. `Esc` deselects, and `E` ends the turn.
 To try the API from the browser, click the **Scalar (API docs)** link next to `api` (Development only).
 
 Without Aspire, run these in two terminals:

@@ -154,7 +154,8 @@ File: `docs/learning/step-NN-<slug>.md`. Fill in every section and delete none.
   - One-time: `aspire certs trust` (trusts the HTTPS dev certificate for the dashboard)
 - Without Aspire: `dotnet run --project src/Tactics.Api --launch-profile http` + `npm run dev` in `client/` → http://localhost:5173
 - Play a local game (pass & play): the `client` URL + `/?mode=local` (without Aspire: http://localhost:5173/?mode=local). Each reload starts a new game.
-  - Browser console (F12), dev builds only: `tactics.units()` · `tactics.move(unitId, x, y)` · `tactics.act(actorId, targetId)` · `tactics.endTurn()`
+  - Controls: click one of your units, then a lit tile (move) or a yellow target (act) · `Esc` or a click off the board deselects · `E` or the on-canvas button ends the turn
+  - Browser console (F12), dev builds only: `tactics.units()` · `tactics.move(unitId, x, y)` · `tactics.act(actorId, targetId)` · `tactics.endTurn()`. They play through the same path as clicks, so a refusal (`tactics.move("one-warrior", 0, 0)`) shows on the canvas too.
 - API docs (Development only): the **Scalar (API docs)** link next to `api` in the Aspire dashboard, or http://localhost:5257/scalar · OpenAPI JSON at http://localhost:5257/openapi/v1.json
   - To play over HTTP: `POST /api/games` → `POST /api/games/{gameId}/join` → paste a `playerToken` into Scalar's auth field → `POST /api/games/{gameId}/actions`
 - .NET build: `dotnet build` (warnings are errors in every project: must be 0)
