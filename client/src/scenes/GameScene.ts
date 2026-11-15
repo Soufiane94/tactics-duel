@@ -229,8 +229,8 @@ export class GameScene extends Phaser.Scene {
 
   /** Sends the HUD a fresh model of what to show. The HUD draws only that: render from state, again. */
   private renderHud(): void {
-    const hovered = this.hoveredTile === null ? undefined : unitAt(this.view!, this.hoveredTile);
     if (this.view !== null) {
+      const hovered = this.hoveredTile === null ? undefined : unitAt(this.view!, this.hoveredTile);
       this.hud.emit("show", hudModelFor(this.view, this.inputState, this.viewer, hovered?.id ?? null));
     }
   }
