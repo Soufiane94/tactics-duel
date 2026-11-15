@@ -47,11 +47,43 @@ export const LETTER_STYLE: Phaser.Types.GameObjects.Text.TextStyle = {
   fontSize: `${Math.round(TILE_SIZE * 0.375)}px`,
 };
 
-/** The temporary turn controls' text (until Step 8's HUD): a size only, in Phaser's default font. */
-export const CONTROLS_TEXT_STYLE: Phaser.Types.GameObjects.Text.TextStyle = { fontSize: "20px" };
+/** The "−N" and "+N" that rise from units: a size only, in Phaser's default font and colour (white). */
+export const FLOATING_NUMBER_STYLE: Phaser.Types.GameObjects.Text.TextStyle = { fontSize: "24px" };
+
+/**
+ * The hit flash: for a moment, the unit's body is drawn in this one colour. Tint FILL mode replaces the texture's
+ * colours, where the usual MULTIPLY mixes them (white × blue = blue, but FILL white = white).
+ */
+export const HIT_FLASH_COLOUR = 0xffffff;
 
 /** How faint the End Turn button gets while it can't be used (alpha: 0 is invisible, 1 is opaque). */
 export const DISABLED_ALPHA = 0.4;
+
+/** The HUD's text styles: sizes only, in Phaser's default font, because choosing a font is your call (Step 9). */
+type TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
+export const HUD_TEXT = {
+  turnLine: { fontSize: "22px" },
+  button: { fontSize: "20px" },
+  panelTitle: { fontSize: "22px" },
+  panelLines: { fontSize: "17px", lineSpacing: 6 },
+  banner: { fontSize: "40px" },
+  victory: { fontSize: "48px" },
+  victoryHint: { fontSize: "20px" },
+  /** A plain black box behind the message, three-quarters opaque. */
+  toast: { fontSize: "18px", align: "center", backgroundColor: "rgba(0, 0, 0, 0.75)", padding: { x: 12, y: 6 } },
+} as const satisfies Record<string, TextStyle>;
+
+/** PLACEHOLDER HUD shapes: plain black see-through backgrounds, and a square in a side's debug colour. */
+export const HUD_SHAPES = {
+  /** The square next to the turn line and the panel's title, in the side's colour (`PLACEHOLDER_THEME.team`). */
+  swatchSize: 14,
+  /** The unit panel: its width, the space inside its edges, and its background. */
+  panel: { width: 176, padding: 12, colour: 0x000000, alpha: 0.35 },
+  /** The turn banner: a strip across the whole screen. */
+  bannerStrip: { height: 96, colour: 0x000000, alpha: 0.6 },
+  /** The victory overlay dims everything under it. */
+  overlay: { colour: 0x000000, alpha: 0.6 },
+} as const;
 
 /** The texture keys: the names the other files ask the Texture Manager for. */
 export const PLACEHOLDER_TEXTURES = {

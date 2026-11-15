@@ -22,8 +22,9 @@ export type InputState =
   /** Your turn, and one of your units is selected: its moves and targets are highlighted. */
   | { readonly kind: "unitSelected"; readonly unitId: string }
   /**
-   * Waiting for the server: an action is on its way (Step 8: or its animation is playing). Input is ignored.
-   * `reselect` is the unit to select again when the answer comes, if it can still do something. Null after End Turn.
+   * Waiting: an action is on its way, or its answer's animation is playing. Input is ignored, so clicks and keys
+   * during an animation do nothing. `reselect` is the unit to select again once the answer is on screen, if it can
+   * still do something. Null after End Turn.
    */
   | { readonly kind: "busy"; readonly reselect: string | null }
   /** The other player is playing. */
@@ -39,7 +40,10 @@ export type InputEvent =
   | { readonly type: "cancelled" }
   /** The `E` key or the End Turn button. */
   | { readonly type: "endTurnPressed" }
-  /** A new view is on screen: the answer to a request, a fresh copy after a conflict, or (Step 11) a push. */
+  /**
+   * A new view is on screen: the answer to a request (after its animation), a fresh copy after a conflict, or
+   * (Step 11) a push.
+   */
   | { readonly type: "viewReceived" }
   /** The request ended without a new view (a refusal, no network): the view on screen still holds. */
   | { readonly type: "requestFailed" };
@@ -133,8 +137,11 @@ function settle(unitId: string | null, view: GameView): InputState {
   return resting;
 }
 
-/** The unit a state would like to keep selected: the selected one, or the one to reselect after an answer. */
-function selectionOf(state: InputState): string | null {
+/**
+ * The unit a state would like to keep selected: the selected one, or the one to reselect after an answer. The HUD
+ * shows its panel, so the panel stays up while the unit's action plays.
+ */
+export function selectionOf(state: InputState): string | null {
   switch (state.kind) {
     case "unitSelected":
       return state.unitId;

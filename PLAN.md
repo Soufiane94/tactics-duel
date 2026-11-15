@@ -18,7 +18,7 @@ It's built in small steps, each followed by a learning report.
 - [x] Step 5 — Game server v1 (in-memory API)
 - [x] Step 6 — Phaser 101: draw the board
 - [x] Step 7 — Input: select, move, act, end turn
-- [ ] Step 8 — Game feel: animations & HUD
+- [x] Step 8 — Game feel: animations & HUD
 - [ ] Step 9 — Art & sound pipeline (my style, my choice)
 - [ ] Step 10 — Lobby: create, invite, join
 - [ ] Step 11 — Real-time with SignalR
@@ -135,6 +135,7 @@ tactics-duel/
 │     ├─ main.ts · config.ts
 │     ├─ scenes/            # BootScene, MenuScene, GameScene, HudScene
 │     ├─ game/              # types, grid, BoardRenderer, UnitSprite, EventPlayer, InputController
+│     ├─ hud/               # HUD model, messages (the bus contract) and widgets (Step 8)
 │     ├─ net/               # ApiClient, RealtimeClient, session
 │     └─ media/             # visuals.ts, sounds.ts: art & sound mapping (Step 9)
 ├─ Directory.Build.props · Directory.Packages.props · global.json
@@ -861,3 +862,9 @@ Accounts and passwords · AI opponent · matchmaking · chat · native mobile ap
 - 2026-11-14 — Step 7 — in pass & play, an accepted action can cost a second request: after a turn change, `viewToShow` GETs the view with the next player's token — the server answers with the sender's view, whose `availableActions` is empty once the turn passes (in the Step 7 brief).
 - 2026-11-14 — Step 7 — the console commands stay and go through the same `play` path as clicks; network errors show on the canvas too, like 422s — clicks only send listed actions, so the console is the way to see a refusal on screen (approved in the Step 7 brief).
 - 2026-11-14 — Step 7 — more pure modules with tests: `game/viewQueries.ts`, `game/highlights.ts`, `game/turnText.ts`, `net/play.ts`, plus shared test data in `client/src/test/fixtures.ts` — CLAUDE.md keeps pure logic out of Phaser classes so Vitest can test it.
+- 2026-11-14 — Step 8 — the HUD's wording follows the seats this browser holds (`Viewer`): pass & play names the sides ("Player Two to play", "Player One wins!"); "Your turn" / "Opponent's turn" / "You win!" / "You lose" are for one seat (Step 10) — on a shared screen, "your" means nobody (approved in the Step 8 brief).
+- 2026-11-14 — Step 8 — the HUD's model, messages and widgets live in a new folder, `client/src/hud/` — six HUD files, and `game/` already had 20 (approved in the Step 8 brief).
+- 2026-11-14 — Step 8 — `FEEL.speed` (a time scale for tweens and game timers) joins `feel.ts` — one number plays every animation in slow motion, to study it (approved in the Step 8 brief).
+- 2026-11-14 — Step 8 — the turn banner and the victory overlay are drawn by `HudScene`, which GameScene asks over the bus with a `done` callback — they sit in screen space above the board, and the next event must wait for them (in the Step 8 brief).
+- 2026-11-14 — Step 8 — the turn line and the unit card show a square in the side's debug colour, the card adds the unit's ability ("Heals allies"), and the victory overlay says "Reload the page to play again." — in pass & play nothing else says which colour is whose, and there's no menu before Step 10.
+- 2026-11-14 — Step 8 — more pure modules with tests: `game/EventBus.ts`, `hud/hudModel.ts`, plus `viewerOf` (`net/session.ts`) and `lungeOffset` (`game/unitDisplay.ts`) — CLAUDE.md keeps pure logic out of Phaser classes so Vitest can test it.

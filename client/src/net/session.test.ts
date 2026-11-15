@@ -1,7 +1,15 @@
 import { describe, expect, it } from "vitest";
 import type { GameView, PlayerSide } from "../game/types";
 import { GAME_ID as gameId, view } from "../test/fixtures";
-import { localSession, readLaunchMode, startLocalGame, viewToShow, type GameSession, type LobbyApi } from "./session";
+import {
+  localSession,
+  readLaunchMode,
+  startLocalGame,
+  viewerOf,
+  viewToShow,
+  type GameSession,
+  type LobbyApi,
+} from "./session";
 
 /** A view of a fresh game (Player One to move), as `side` sees it. */
 function freshView(side: PlayerSide): GameView {
@@ -48,6 +56,28 @@ describe("startLocalGame", () => {
     expect(session.tokenFor("one")).toBe("token-one");
     expect(session.tokenFor("two")).toBe("token-two");
     expect(session.holds("one") && session.holds("two")).toBe(true);
+  });
+});
+
+describe("viewerOf", () => {
+  /** A session that holds exactly the seats listed. */
+  const holding = (...seats: PlayerSide[]): GameSession => ({
+    gameId,
+    holds: (side) => seats.includes(side),
+    tokenFor: () => "token",
+  });
+
+  it("plays for nobody in particular in pass & play, so the texts name the sides", () => {
+    expect(viewerOf(localSession(gameId, { one: "token-one", two: "token-two" }))).toBeNull();
+  });
+
+  it("plays for the one seat it holds online", () => {
+    expect(viewerOf(holding("one"))).toBe("one");
+    expect(viewerOf(holding("two"))).toBe("two");
+  });
+
+  it("plays for nobody when it holds no seat (a spectator)", () => {
+    expect(viewerOf(holding())).toBeNull();
   });
 });
 

@@ -2,17 +2,20 @@
 
 Every new term, in alphabetical order, with the step where it first appears.
 
+- **Animator** — draws one game event as an animation, and says when it's done (`Animator` in `EventPlayer.ts`). Tests pass a fake one. *(Step 8)*
 - **ASCII board** — a text picture of a board (`W . h`) that tests turn into a game state. *(Step 1)*
 - **Aspire AppHost** — a C# program that describes the dev environment (services, apps, databases) and runs it with `aspire run`. *(Step 0)*
 - **Aspire dashboard** — a web page that shows every resource's state, logs, traces and environment variables. *(Step 0)*
 - **Authoritative server** — the server decides every outcome (legality, damage); clients only send requests. *(Step 3)*
 - **Base resolution** — the fixed logical size the game draws in (here 960×640), whatever the window size. *(Step 0)*
 - **Bearer token** — a token sent as `Authorization: Bearer <token>`. Whoever holds ("bears") it is trusted. *(Step 5)*
+- **Beat** — the part of an event's animation that the next event waits for. Purely decorative effects may outlast it. *(Step 8)*
 - **BFS (breadth-first search)** — explores from a start ring by ring, with a queue. When every step costs 1, it finds shortest paths. *(Step 2)*
 - **Blind spot** — the tiles closer than a unit's `MinRange`. It can't target anything there (the archer next to an enemy). *(Step 3)*
 - **Brute-force test** — tries every possible input and checks one property for each (every tile, every target: "listed ⇔ accepted"). *(Step 4)*
 - **Busy state** — the input state while the client waits for the server (from Step 8, for an animation too). Clicks and keys are ignored, so a double click can't send twice. *(Step 7)*
 - **Came-from map** — for each tile a search reached, the tile it came from. Following it backwards rebuilds the path. *(Step 2)*
+- **Camera shake** — the camera jiggling a few pixels for an instant, to sell an impact. *(Step 8)*
 - **Canvas 2D renderer** — draws with the browser's CPU-based 2D API. Simple, but deprecated in Phaser 4. *(Step 0)*
 - **Capability token** — a secret that grants a right by itself, with no account behind it: the player token is a seat. *(Step 5)*
 - **Central Package Management (CPM)** — every NuGet version lives once in `Directory.Packages.props`; projects list packages without versions. *(Step 0)*
@@ -34,9 +37,13 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Dev proxy** — the Vite server forwards some paths (`/api`) to another server, so the browser sees one origin. *(Step 0)*
 - **Display list** — the ordered list of game objects a scene draws every frame. *(Step 6)*
 - **DTO (data transfer object)** — a plain type shaped like a file or wire format, mapped to domain types after validation. *(Step 1)*
+- **Easing** — the speed curve of a tween: steady (`Linear`), fast then slow (`easeOut`), slow then fast (`easeIn`). *(Step 8)*
 - **Event (game event)** — a past-tense fact about what just happened (`UnitMoved`). The client animates it; the state stays the truth. *(Step 2)*
+- **Event bus** — a channel where senders and listeners share message names, not references to each other. *(Step 8)*
+- **Event player** — plays a list of game events as animations, one at a time, then hands over for the snap (`EventPlayer`). *(Step 8)*
 - **Event propagation** — an input event passed on from the object under the pointer to the whole scene. `event.stopPropagation()` ends it early. *(Step 7)*
 - **Event sourcing** — storing what happened (events) and rebuilding the state by applying them in order. *(Step 4)*
+- **Floating combat text** — damage and heal numbers that rise from a unit and fade. *(Step 8)*
 - **Flood fill** — spreading out from one tile to every tile connected to it, like paint. BFS is one way to do it. *(Step 2)*
 - **Fold (reduce)** — combining a list into one value step by step: `Aggregate` in LINQ, `reduce` in JavaScript. `Replay` folds `Apply` over the actions. *(Step 4)*
 - **Frame** — one redraw of the whole canvas. At 60 FPS, a frame lasts about 16.7 ms. *(Step 0)*
@@ -44,6 +51,7 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Frontier** — the queue of tiles a search has found but not explored yet. *(Step 2)*
 - **Game balance** — tuning numbers and formulas so that no unit or choice is always the best one. *(Step 3)*
 - **Game engine** — an editor-based tool (Unity, Godot) that hosts your code inside its own app. *(Step 0)*
+- **Game feel** — how an action feels to do and to watch: its timing, weight and feedback. Juice is how you tune it. *(Step 8)*
 - **Game framework** — a code library (Phaser) that you call from your own program. *(Step 0)*
 - **Game loop** — the endless cycle of update → render, run once per frame. *(Step 0)*
 - **Game object** — anything a scene can show or update: an Image, a Text, a Rectangle, a Container. *(Step 6)*
@@ -55,19 +63,24 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Guard test** — fails when a new case is added in one place but not in another that must list it too (`[JsonDerivedType]`). *(Step 4)*
 - **Health check** — an endpoint (`/health`) that says whether a service is ready. Aspire polls it. *(Step 0)*
 - **Highlight** — a tile lit up to show an option: where the selected unit can move, what it can act on. *(Step 7)*
+- **Hit flash** — a target drawn in solid white for a moment when it's hit (tint FILL mode). *(Step 8)*
 - **Hit test** — finding which object is under the pointer. In the DOM the browser does it; on a canvas, the engine or your own maths does. *(Step 7)*
 - **HMR (Hot Module Replacement)** — Vite swaps changed modules in the running page without a full reload. *(Step 0)*
 - **Hover** — the pointer resting over something without clicking. Here, an outline on the tile under the pointer. *(Step 7)*
 - **HUD (heads-up display)** — the interface drawn over the game: turn, panels, buttons, messages. *(Step 6)*
+- **HUD model** — the data the HUD shows, computed from the view and the input state, then drawn as is (`hudModelFor`). *(Step 8)*
 - **Idle animation** — a small looping motion (breathing, bobbing) that keeps waiting units looking alive. *(Step 6)*
 - **Image (Phaser)** — a game object that shows a texture. A Sprite is an Image that can also play frame animations. *(Step 6)*
 - **Immutable** — can't change after creation; "changing" it creates a new copy. *(Step 1)*
 - **Input state machine** — the client's input states (idle, unit selected, busy, opponent's turn, game over) and what each click or key does in each. *(Step 7)*
 - **Interactive object** — a game object that Phaser hit-tests for pointer events, after `setInteractive()`. *(Step 7)*
+- **Juice** — small, exaggerated reactions (a lunge, a flash, a shake, a number) that make actions feel good and read clearly. They change no rule. *(Step 8)*
 - **Key repeat** — holding a key makes the browser send `keydown` again and again; those copies have `event.repeat === true`. *(Step 7)*
+- **Late subscriber** — a listener that starts after a message was sent, and so misses it. *(Step 8)*
 - **Legal move generation** — listing every action a side may take right now (`GetAvailableActions`). The term comes from chess engines. *(Step 4)*
 - **Letterboxing** — the bars around the canvas when the window's shape differs from the game's aspect ratio. *(Step 0)*
 - **Lockstep** — online play where machines swap only inputs, and each runs the same deterministic game. Common in RTS games. *(Step 4)*
+- **Lunge** — a quick step toward the target and back, to show who attacks whom. *(Step 8)*
 - **Manhattan distance** — `|dx| + |dy|`: the number of grid steps between two tiles without diagonals. *(Step 1)*
 - **Microsoft.Testing.Platform (MTP)** — the new .NET test runner. Test projects are executables. *(Step 0)*
 - **Mutation test** — breaking the code on purpose (one number, one check) to prove that a test notices. *(Step 3)*
@@ -107,6 +120,7 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Service defaults** — shared Aspire setup for every service: telemetry, health checks, resilience, service discovery. *(Step 0)*
 - **Setup snapshot** — the setup a game was created with, kept with the game so editing `content/` never changes it. *(Step 5)*
 - **Smoke test** — a tiny test that proves the wiring works end to end, not the logic. *(Step 0)*
+- **Snap** — setting every sprite to the view's state at once, after the animations: the state wins. *(Step 8)*
 - **Source of truth** — the one place a fact is stored. Everything else is derived from it. *(Step 1)*
 - **Targeting rules** — who may act on whom: enemies for damage, injured allies for a heal. *(Step 3)*
 - **Terminal state** — a state no action can leave, like `Finished`: every action gets `GameOver`. *(Step 4)*
@@ -116,9 +130,14 @@ Every new term, in alphabetical order, with the step where it first appears.
 - **Thin client** — a client that shows the state and asks the server, but decides nothing: the server's lists say what's allowed. *(Step 7)*
 - **Tick** — one run of a real-time game server's update loop, often 20 to 60 per second. A turn-based server needs none. *(Step 5)*
 - **Tie-breaking** — the fixed rule that picks one result when several are equally good. Here, the neighbor order picks the path. *(Step 2)*
+- **Time scale** — a multiplier on a clock: 0.25 plays tweens and timers in slow motion, 2 at double speed. *(Step 8)*
 - **Tint** — a colour multiplied into a texture's pixels as it's drawn. Phaser 4: `setTint`, plus `setTintMode` for other blends. *(Step 6)*
+- **Toast** — a short message that appears, stays a few seconds, then fades. *(Step 8)*
 - **Transition (state machine)** — one step of a state machine: in a given state, an event leads to the next state. Here it can also return an action to send. *(Step 7)*
+- **Turn banner** — a strip across the screen that announces whose turn starts. *(Step 8)*
 - **Turn state machine** — the game's states (whose turn it is, finished) and the actions that move between them. *(Step 4)*
+- **Tween** — an animation of one property from A to B over a duration; the engine computes the in-between values each frame. *(Step 8)*
+- **Tween chain** — tweens played one after another, such as a walk's steps. *(Step 8)*
 - **Type discriminator** — the JSON field (`"type": "move"`) that says which subtype an object is. *(Step 2)*
 - **Validate, then apply** — check every rule before changing anything. A failed check returns a rejection, not an exception. *(Step 2)*
 - **Vite** — the dev server and bundler for the client: serves TypeScript on the fly, then builds `dist/` for production. *(Step 0)*

@@ -1,3 +1,4 @@
+import type { Viewer } from "../game/turnText";
 import type { GameView, PlayerSide } from "../game/types";
 import type { ApiClient } from "./ApiClient";
 
@@ -29,6 +30,19 @@ export interface GameSession {
  */
 export function localSession(gameId: string, tokens: Readonly<Record<PlayerSide, string>>): GameSession {
   return { gameId, holds: () => true, tokenFor: (side) => tokens[side] };
+}
+
+/**
+ * Whom the texts on screen speak to (`Viewer`, in `game/turnText.ts`). A browser that holds one seat plays for it:
+ * "Your turn". One that holds both (pass & play), or none (a spectator, someday), plays for nobody in particular, so
+ * the texts name the sides: "Player Two to play".
+ */
+export function viewerOf(session: GameSession): Viewer {
+  const holdsOne = session.holds("one");
+  if (holdsOne === session.holds("two")) {
+    return null;
+  }
+  return holdsOne ? "one" : "two";
 }
 
 /**

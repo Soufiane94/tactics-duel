@@ -7,7 +7,7 @@ A two-player, turn-based fantasy tactics game that runs in the browser.
 > Working title. Built step by step as a learning project. See [`PLAN.md`](PLAN.md) for the rules, architecture and progress.
 
 ## Status
-Step 7: a whole game plays in the browser. `/?mode=local` starts a game on the server for two players on one screen. Click a unit to light up where it can move and what it can hit, as the server lists it, then click to move or act, and press `E` to end the turn. The server judges every action. Animations and a HUD are next.
+Step 8: a whole game plays in the browser, and it shows what happens. `/?mode=local` starts a game on the server for two players on one screen. Click a unit to light up where it can move and what it can hit, as the server lists it, then click to move or act, and press `E` to end the turn. The server judges every action; its events then play as animations (walking, lunges, hit flashes, damage numbers, fading units, turn banners) before the screen snaps to the server's state. A HUD shows the turn, the selected unit's stats and the End Turn button. The art and sound pipeline is next.
 
 ## Stack
 - **Server:** .NET 10, ASP.NET Core Minimal APIs (SignalR and EF Core + PostgreSQL come later)
